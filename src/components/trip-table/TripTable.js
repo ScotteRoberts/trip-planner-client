@@ -1,6 +1,6 @@
 import React from 'react';
 import './TripTable.css';
-import Listing from './TripTableData';
+import TripTableDatum from './TripTableDatum';
 
 const listingHeaders = [
   'Title',
@@ -13,7 +13,7 @@ const listingHeaders = [
   'Trip Planning State',
 ];
 
-const ListingPanel = props => (
+const TripTable = props => (
   <table className="listing-panel">
     <thead>
       <tr>
@@ -24,10 +24,10 @@ const ListingPanel = props => (
     </thead>
 
     <tbody>
-      {props.tripList.map((listing, index) => (
-        <Listing
+      {props.tripList.map((trip, index) => (
+        <TripTableDatum
           key={index}
-          listing={listing}
+          trip={trip}
           onTripSelect={props.onTripSelect}
         />
       ))}
@@ -35,4 +35,4 @@ const ListingPanel = props => (
   </table>
 );
 
-export default ListingPanel;
+export default TripTable;

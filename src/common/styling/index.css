@@ -1,3 +1,10 @@
+/* Index import css for all styling */
+
 @import 'resets.css';
 @import 'style.css';
 @import 'palette.css';
+
+th,
+td {
+  border: black 1px solid;
+}

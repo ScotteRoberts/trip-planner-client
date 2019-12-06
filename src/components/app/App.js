@@ -4,73 +4,43 @@ import FilterPanel from '../filter-panel';
 import TripTable from '../trip-table';
 import DetailPanel from '../detail-panel';
 import TripForm from '../trip-form';
-import { exampleTripList, Trip } from '../../common/trip/Trip.model';
-import { filterTrips, deleteTripById } from '../../common/trip/Trip.util';
+import TodoList from '../todo-list';
+import TripFilters from '../trip-filters';
+
+// Auth
+import {
+  getAppStorage,
+  setAppStorage,
+  appStorage,
+} from '../../common/tokens/appStorage';
+
+// Trips
+import { Trip } from '../../common/trip/Trip.model';
+import {
+  filterTrips,
+  deleteTripById,
+  updateTripList,
+} from '../../common/trip/Trip.util';
+
+// Todos
+import {
+  addTodo,
+  deleteTodoById,
+  updateTodoById,
+} from '../../common/todo/Todo.util';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tripList: exampleTripList,
-      filterOptions: {
-        searchText: '',
-        category: '',
-      },
-      currentListing: new Trip(),
-    };
+    this.state = appStorage;
   }
 
-  handleSaveTrip = event => {
-    event.preventDefault();
-    const newTripList = [...this.state.tripList];
-    newTripList.push(this.state.currentListing);
-    this.setTripList(newTripList);
-  };
+  componentDidMount() {
+    const token = getAppStorage();
+    this.setState(token);
+  }
 
-  handleCancelTrip = event => {
-    event.preventDefault();
-    this.setState({ currentListing: new Trip() });
-  };
-
-  handleDeleteTrip = event => {
-    event.preventDefault();
-    const newTripList = deleteTripById(
-      this.state.tripList,
-      this.state.currentListing.id
-    );
-    this.setTripList(newTripList);
-  };
-
-  handleInputChange = event => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState(prevState => ({
-      currentListing: { ...prevState.currentListing, [name]: value },
-    }));
-  };
-
-  handleNamedChange = (name, value) => {
-    this.setState(prevState => ({
-      currentListing: { ...prevState.currentListing, [name]: value },
-    }));
-  };
-
-  // FIXME: This is getting ridiculous with these functions
-  handleDateTimePicker = (name, value) => {
-    this.setState(prevState => ({
-      currentListing: {
-        ...prevState.currentListing,
-        reminder: {
-          ...prevState.currentListing.reminder,
-          [name]: value,
-        },
-      },
-    }));
-  };
-
-  // ==========================
+  // ===================== GENERAL ================================
 
   setTripList = newTripList => {
     this.setState({ tripList: newTripList });
@@ -81,35 +51,192 @@ class App extends React.Component {
   };
 
   handleSelectingTrip = trip => {
-    this.setState({ currentListing: trip });
+    this.setState({
+      currentTrip: trip,
+      isDetailPanelActive: true,
+      isNewTrip: false,
+    });
   };
 
-  // ============================
+  toggleTripForm = event => {
+    if (event) event.preventDefault();
+    this.setState(prevState => ({
+      isDetailPanelActive: !prevState.isDetailPanelActive,
+    }));
+  };
+
+  handleAddNewTrip = event => {
+    if (event) event.preventDefault();
+    this.setState({
+      currentTrip: new Trip(),
+      isDetailPanelActive: true,
+      isNewTrip: true,
+    });
+  };
+
+  // ===================== TRIP FORM HANDLERS ================================
+
+  handleSaveTrip = event => {
+    if (event) event.preventDefault();
+    // Update the trips list
+
+    this.setState(
+      prevState => {
+        const updatedTripList = updateTripList(
+          prevState.tripList,
+          this.state.currentTrip
+        );
+        return {
+          tripList: updatedTripList,
+          isDetailPanelActive: !prevState.isDetailPanelActive,
+        };
+      },
+      () => setAppStorage({ ...this.state })
+    );
+  };
+
+  handleResetTrip = event => {
+    if (event) event.preventDefault();
+    this.setState(prevState => ({
+      currentTrip: new Trip(),
+      isDetailPanelActive: !prevState.isDetailPanelActive,
+    }));
+  };
+
+  handleDeleteTrip = event => {
+    if (event) event.preventDefault();
+    this.setState(
+      prevState => {
+        const updatedTripList = deleteTripById(
+          prevState.tripList,
+          this.state.currentTrip.id
+        );
+        return {
+          tripList: updatedTripList,
+          currentTrip: new Trip(),
+          isDetailPanelActive: !prevState.isDetailPanelActive,
+        };
+      },
+      () => setAppStorage({ ...this.state })
+    );
+  };
+
+  handleInputChange = event => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState(prevState => ({
+      currentTrip: { ...prevState.currentTrip, [name]: value },
+    }));
+  };
+
+  handleNamedChange = (name, value) => {
+    this.setState(prevState => ({
+      currentTrip: { ...prevState.currentTrip, [name]: value },
+    }));
+  };
+
+  // FIXME: This is getting ridiculous with these functions
+  handleReminderChange = (name, value) => {
+    this.setState(prevState => ({
+      currentTrip: {
+        ...prevState.currentTrip,
+        reminder: {
+          ...prevState.currentTrip.reminder,
+          [name]: value,
+        },
+      },
+    }));
+  };
+
+  handleReminderSet = event => {
+    event.preventDefault();
+    this.setState(prevState => ({
+      currentTrip: {
+        ...prevState.currentTrip,
+        reminder: {
+          ...prevState.currentTrip.reminder,
+          isSet: !prevState.currentTrip.reminder.isSet,
+        },
+      },
+    }));
+  };
+
+  // ===================== TODO HANDLERS A================================
+
+  setTodoList = newTodoList => {
+    this.setState(prevState => ({
+      currentTrip: {
+        ...prevState.currentTrip,
+        todos: newTodoList,
+      },
+    }));
+  };
+
+  handleAddTodo = todo => {
+    todo.isCompleted = !todo.isCompleted;
+    const newTodoList = addTodo(this.state.currentTrip.todos, todo);
+    this.setTodoList(newTodoList);
+  };
+
+  handleCheckedTodo = todo => {
+    todo.isCompleted = !todo.isCompleted;
+    const newTodoList = updateTodoById(this.state.currentTrip.todos, todo);
+    this.setTodoList(newTodoList);
+  };
+
+  handleDeleteTodo = todo => {
+    const newTodoList = deleteTodoById(this.state.currentTrip.todos, todo.id);
+    this.setTodoList(newTodoList);
+  };
+
+  // ===================== RENDER ================================
 
   render() {
-    const { tripList, filterOptions, currentListing } = this.state;
+    const {
+      tripList,
+      filterOptions,
+      currentTrip,
+      isDetailPanelActive,
+      isNewTrip,
+    } = this.state;
     return (
       <main id="app">
-        <FilterPanel
-          filterOptions={filterOptions}
-          setFilterOptions={this.setFilterOptions}
-        />
+        <FilterPanel>
+          <TripFilters
+            filterOptions={filterOptions}
+            setFilterOptions={this.setFilterOptions}
+            onAddTrip={this.handleAddNewTrip}
+          />
+        </FilterPanel>
+
         <TripTable
           onTripSelect={this.handleSelectingTrip}
           tripList={filterTrips(tripList, filterOptions)}
           setTripList={this.setTripList}
         />
-        <DetailPanel>
+
+        <DetailPanel isActive={isDetailPanelActive}>
           <TripForm
-            currentListing={currentListing}
+            currentTrip={currentTrip}
+            isNewTrip={isNewTrip}
             setTripList={this.setTripList}
             onSaveTrip={this.handleSaveTrip}
-            onCancelTrip={this.handleCancelTrip}
+            onCancelTrip={this.handleResetTrip}
             onDeleteTrip={this.handleDeleteTrip}
             onInputChange={this.handleInputChange}
             onNamedChange={this.handleNamedChange}
-            onDateTimePicker={this.handleDateTimePicker}
-          />
+            onReminderChange={this.handleReminderChange}
+            onReminderSet={this.handleReminderSet}
+          >
+            <TodoList
+              todos={currentTrip.todos}
+              onAddTodo={this.handleAddTodo}
+              onChecked={this.handleCheckedTodo}
+              onDelete={this.handleDeleteTodo}
+            />
+          </TripForm>
         </DetailPanel>
       </main>
     );

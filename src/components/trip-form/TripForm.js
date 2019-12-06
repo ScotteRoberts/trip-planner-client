@@ -1,14 +1,53 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './TripForm.css';
 
 import DateTimePicker from 'react-datetime-picker';
 import DatePicker from 'react-date-picker';
-import TodoList from '../todo-list';
 import CategoryDropdown from '../category-dropdown';
 
-// FIXME: Make sure you add in the tripDuration somewhere.......
+import { DateStringType } from '../../common/trip/Trip.model';
+
+import {
+  titleValidation,
+  destinationValidation,
+  descriptionValidation,
+  startDateValidation,
+  endDateValidation,
+  reminderDateValidation,
+} from '../../common/trip/Trip.validations';
 
 class TripForm extends Component {
+  // TODO: Validate that the data exists before submission
+
+  static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]).isRequired,
+
+    currentTrip: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      destination: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      startDate: DateStringType.isRequired,
+      endDate: DateStringType.isRequired,
+      reminder: PropTypes.shape({
+        isSet: PropTypes.bool.isRequired,
+        dateTime: DateStringType.isRequired,
+      }).isRequired,
+    }).isRequired,
+
+    isNewTrip: PropTypes.bool.isRequired,
+    onInputChange: PropTypes.func.isRequired,
+    onNamedChange: PropTypes.func.isRequired,
+    onReminderChange: PropTypes.func.isRequired,
+    onReminderSet: PropTypes.func.isRequired,
+    onSaveTrip: PropTypes.func.isRequired,
+    onCancelTrip: PropTypes.func.isRequired,
+    onDeleteTrip: PropTypes.func.isRequired,
+  };
+
   render() {
     const {
       title,
@@ -17,13 +56,21 @@ class TripForm extends Component {
       startDate,
       endDate,
       reminder,
-    } = this.props.currentListing;
-    console.log(this.props.currentListing);
+    } = this.props.currentTrip;
+
+    const isValidSubmission =
+      titleValidation(title) &&
+      destinationValidation(destination) &&
+      descriptionValidation(description) &&
+      startDateValidation(startDate) &&
+      endDateValidation(startDate, endDate) &&
+      reminderDateValidation(startDate, reminder.dateTime);
+
     // TODO: Make sure to make a submit handler for this form! Prevent those defaults!
     return (
-      <form className="trip-form">
-        <div className="trip-form__fields">
-          <label htmlFor="title">
+      <form onSubmit={this.props.onSaveTrip} className="trip-form">
+        <div className="trip-form-fields">
+          <label className="input-container" htmlFor="title">
             Title:
             <input
               type="text"
@@ -34,7 +81,7 @@ class TripForm extends Component {
             />
           </label>
 
-          <label htmlFor="destination">
+          <label className="input-container" htmlFor="destination">
             Destination:
             <input
               type="text"
@@ -45,7 +92,7 @@ class TripForm extends Component {
             />
           </label>
 
-          <label htmlFor="description">
+          <label className="input-container" htmlFor="description">
             Description:
             <input
               type="text"
@@ -56,7 +103,7 @@ class TripForm extends Component {
             />
           </label>
 
-          <label htmlFor="category">
+          <div className="input-container">
             Category:
             <CategoryDropdown
               name="category"
@@ -64,48 +111,65 @@ class TripForm extends Component {
                 this.props.onNamedChange('category', newCategory)
               }
             />
-          </label>
+          </div>
 
-          <label htmlFor="start-date">
+          {/* FIXME: Date Picker is broken due to incorrect date formats */}
+
+          <div>
             Start Date:
             <DatePicker
               name="start-date"
               onChange={date => this.props.onNamedChange('startDate', date)}
-              value={startDate}
+              value={new Date(startDate)}
             />
-          </label>
+          </div>
 
-          <label htmlFor="end-date">
+          <div>
             End Date:
             <DatePicker
               name="end-date"
               onChange={date => this.props.onNamedChange('endDate', date)}
-              value={endDate}
+              value={new Date(endDate)}
             />
-          </label>
+          </div>
         </div>
 
         {/* ====================================================== */}
 
-        <TodoList todos={this.props.currentListing.todos} />
+        {this.props.children}
 
         {/* ====================================================== */}
 
         <label htmlFor="reminder">
           Set Reminder:
-          <DateTimePicker
+          <input
+            type="checkbox"
             name="reminder"
-            onChange={date => this.props.onDateTimePicker('dateTime', date)}
-            value={reminder.dateTime}
+            id="reminder"
+            checked={reminder.isSet}
+            onChange={this.props.onReminderSet}
           />
         </label>
+        <DateTimePicker
+          name="reminder"
+          onChange={date => this.props.onReminderChange('dateTime', date)}
+          value={new Date(reminder.dateTime)}
+        />
 
         {/* ====================================================== */}
 
-        <div className="trip">
-          <button onClick={this.props.onSaveTrip}>Save</button>
-          <button onClick={this.props.onCancelTrip}>Cancel</button>
-          <button onClick={this.props.onDeleteTrip}>Delete</button>
+        <div>
+          <button type="submit" disabled={!isValidSubmission}>
+            Save
+          </button>
+          <button type="button" onClick={this.props.onCancelTrip}>
+            Cancel
+          </button>
+          {!this.props.isNewTrip && (
+            <button type="button" onClick={this.props.onDeleteTrip}>
+              Delete
+            </button>
+          )}
         </div>
       </form>
     );

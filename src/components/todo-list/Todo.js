@@ -1,24 +1,44 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { TodoType } from '../../common/todo/Todo.model';
 import './Todo.css';
 
 const Todo = props => {
-  const { todo, handleEdit, handleDelete } = props;
+  const { todo, onChecked, onDelete } = props;
+
+  // TODO: Handle Editing later...
+  const handleDelete = event => {
+    event.preventDefault();
+    return onDelete(todo);
+  };
+
+  const handleChecked = event => {
+    event.preventDefault();
+    return onChecked(todo);
+  };
+
   return (
     <div>
-      {/* TODO: Make a controlled form that hikes up the state change to todolist for each todo */}
-      {/* FIXME: Right now, todo ids can conflict with each other, unless you use UUID */}
       <input
         type="checkbox"
         name={todo.id}
         id={todo.id}
-        value={todo.isCompleted}
+        checked={!todo.isCompleted}
+        onChange={handleChecked}
       />
       <label htmlFor={todo.id}>{todo.description}</label>
-      {/* TODO: Drop the function down from todolist into this delete button */}
-      <button onClick={handleEdit}>Edit</button>
-      <button onClick={handleDelete}>Delete</button>
+
+      <button type="button" onClick={handleDelete}>
+        Delete
+      </button>
     </div>
   );
+};
+
+Todo.propTypes = {
+  todo: TodoType,
+  onChecked: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default Todo;

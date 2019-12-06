@@ -1,7 +1,7 @@
 #app {
   min-height: calc(100vh);
   display: grid;
-  grid-template-columns: 0.5fr 1.8fr 1.2fr;
+  grid-template-columns: 0.5fr minmax(1.8fr, 3fr) 1.2fr;
   grid-template-areas: 'filter-panel listing-panel  detail-panel';
   /* gap: 1rem; */
 }

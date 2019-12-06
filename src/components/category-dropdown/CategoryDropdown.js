@@ -27,7 +27,7 @@ export default class CategoryDropdown extends Component {
         name={this.props.name}
         form={this.props.form}
         onChange={this.handleChange}
-        required
+        value={this.state.currentOption}
       >
         <option value="">- Select a Category -</option>
         <option value="none">None</option>

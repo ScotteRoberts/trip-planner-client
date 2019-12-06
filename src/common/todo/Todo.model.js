@@ -1,13 +1,22 @@
+import uuid from 'uuid/v4';
+import PropTypes from 'prop-types';
+
+/**
+ * Todo Model
+ */
 export class Todo {
   constructor() {
-    this.id = '';
+    this.id = uuid();
     this.isCompleted = false;
-    this.description = '';
+    this.description = 'hey';
   }
 }
 
-// export const Todo = {
-//   id: '',
-//   isCompleted: false,
-//   description: '',
-// };
+/**
+ * Todo Type
+ */
+export const TodoType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  isCompleted: PropTypes.bool.isRequired,
+  description: PropTypes.string,
+});

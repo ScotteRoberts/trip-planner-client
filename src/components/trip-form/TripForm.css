@@ -1,9 +1,16 @@
 .trip-form {
+  padding: 1rem;
   display: grid;
   gap: 1rem;
 }
 
-.trip-form__fields {
+.trip-form-fields {
   display: flex;
   flex-flow: column;
+}
+
+.input-container {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
 }
