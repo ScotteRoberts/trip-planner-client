@@ -1,5 +1,8 @@
 import React from 'react';
+import './DetailPanel.css';
 
-const DetailPanel = () => <div>Detail Panel</div>;
+const DetailPanel = props => (
+  <aside className="detail-panel">{props.children}</aside>
+);
 
 export default DetailPanel;

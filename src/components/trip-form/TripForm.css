@@ -1,0 +1,9 @@
+.trip-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.trip-form__fields {
+  display: flex;
+  flex-flow: column;
+}
