@@ -1,25 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 
-import FilterPanel from '../filter-panel';
-import TripTable from '../trip-table';
-import DetailPanel from '../detail-panel';
-import TripForm from '../trip-form';
-import TodoList from '../todo-list';
-import TripFilters from '../trip-filters';
+// =========================== Common Imports ================================
+
+// Store Object
+import { AppStoreType } from '../../common/store/store';
+
+// Auth
+import { setAppStorage } from '../../common/tokens/appStorage';
 
 // Alerts
 import {
-  handleSetupModal,
+  handleReminderModal,
   confirmSuccessfulAction,
 } from '../../common/alerts/swal.util';
-
-// Auth
-import {
-  getAppStorage,
-  setAppStorage,
-  appStorage,
-} from '../../common/tokens/appStorage';
 
 // Trips
 import { Trip } from '../../common/trip/Trip.model';
@@ -29,6 +24,8 @@ import {
   updateTripList,
   calcPlanningState,
   calcTripDuration,
+  tripsWithReminders,
+  timeToExec,
   wait,
 } from '../../common/trip/Trip.util';
 
@@ -39,45 +36,67 @@ import {
   updateTodoById,
 } from '../../common/todo/Todo.util';
 
+// =========================== Component Imports ================================
+
+import FilterPanel from '../filter-panel';
+import TripTable from '../trip-table';
+import DetailPanel from '../detail-panel';
+import TripForm from '../trip-form';
+import TodoList from '../todo-list';
+import TripFilters from '../trip-filters';
+
+// ================================= App =========================================
+
 class App extends React.Component {
+  static propTypes = {
+    store: AppStoreType,
+  };
   constructor(props) {
     super(props);
-    this.state = appStorage;
+    this.state = props.store;
   }
 
   componentDidMount() {
-    const token = getAppStorage();
-    this.setState(token);
-
-    // Grab state from local storage
-    const appState = getAppStorage();
-
-    // Set the reminders for each of the trips
-    appState.tripList.forEach(trip => {
-      const timeToExec = trip.reminder.dateTime
-        ? Date.parse(trip.reminder.dateTime) - Date.now()
-        : -1;
-
-      // Make sure you don't set previous reminders or if they don't need to be set.
-      if (trip.reminder.isSet && timeToExec > Date.now())
-        wait(timeToExec)
-          .then(() => handleSetupModal(trip))
-          .then(result => {
-            if (result.openDetails) {
-              return this.setState({ isDetailPanelActive: true });
-            } else {
-              return this.setState(prevState => {
-                const newTripList = [...prevState.tripList];
-                const updatedList = updateTripList(newTripList, result.trip);
-                return { tripList: updatedList };
-              });
-            }
-          })
-          .catch(err => console.error(err));
+    tripsWithReminders(this.state.tripList).forEach(trip => {
+      this.setReminder(trip);
     });
   }
 
+  componentDidUpdate() {}
+
+  // ===================== TIME KEEPING ===========================
+
+  setReminder = trip => {
+    const timeFromNow = timeToExec(trip);
+    if (timeFromNow > 0)
+      wait(timeFromNow)
+        .then(() => handleReminderModal(trip))
+        .then(result => {
+          if (result.openDetails) {
+            return this.setState({
+              currentTrip: result.trip,
+              isDetailPanelActive: true,
+            });
+          } else {
+            return this.setState(
+              prevState => {
+                const newTripList = [...prevState.tripList];
+                const updatedList = updateTripList(newTripList, result.trip);
+                return { tripList: updatedList };
+              },
+              // TODO: recursively call the wait method
+              () => {
+                this.setReminder(result.trip);
+              }
+            );
+          }
+        })
+        .catch(err => console.error(err));
+  };
+
   // ===================== GENERAL ================================
+
+  // FIXME: Bring out the reducer pattern for this state!!
 
   setTripList = newTripList => {
     this.setState({ tripList: newTripList });
@@ -129,6 +148,8 @@ class App extends React.Component {
         // Calculate trip duration
         tempCurrentTrip.tripDuration = calcTripDuration(startDate, endDate);
 
+        this.setReminder(tempCurrentTrip);
+
         // Update the list of trips
         const updatedTripList = updateTripList(
           prevState.tripList,
@@ -160,11 +181,14 @@ class App extends React.Component {
 
   handleDeleteTrip = event => {
     if (event) event.preventDefault();
+
+    const tempCurrentTrip = { ...this.state.currentTrip };
+
     this.setState(
       prevState => {
         const updatedTripList = deleteTripById(
           prevState.tripList,
-          this.state.currentTrip.id
+          tempCurrentTrip.id
         );
         return {
           tripList: updatedTripList,
@@ -222,7 +246,7 @@ class App extends React.Component {
     }));
   };
 
-  // ===================== TODO HANDLERS A================================
+  // ===================== TODO HANDLERS ================================
 
   setTodoList = newTodoList => {
     this.setState(prevState => ({

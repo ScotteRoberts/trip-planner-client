@@ -6,7 +6,7 @@ import DateTimePicker from 'react-datetime-picker';
 import DatePicker from 'react-date-picker';
 import CategoryDropdown from '../category-dropdown';
 
-import { DateStringType } from '../../common/trip/Trip.model';
+import { TripType } from '../../common/trip/Trip.model';
 
 import {
   titleValidation,
@@ -40,18 +40,7 @@ class TripForm extends Component {
       PropTypes.node,
     ]).isRequired,
 
-    currentTrip: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      destination: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      category: PropTypes.string.isRequired,
-      startDate: DateStringType.isRequired,
-      endDate: DateStringType.isRequired,
-      reminder: PropTypes.shape({
-        isSet: PropTypes.bool.isRequired,
-        dateTime: DateStringType.isRequired,
-      }).isRequired,
-    }).isRequired,
+    currentTrip: TripType.isRequired,
 
     isNewTrip: PropTypes.bool.isRequired,
     onInputChange: PropTypes.func.isRequired,
@@ -80,7 +69,7 @@ class TripForm extends Component {
       descriptionValidation(description) &&
       startDateValidation(startDate) &&
       endDateValidation(startDate, endDate) &&
-      reminderDateValidation(startDate, reminder.dateTime);
+      (!reminder.isSet || reminderDateValidation(startDate, reminder.dateTime));
 
     // TODO: Make sure to make a submit handler for this form! Prevent those defaults!
     return (

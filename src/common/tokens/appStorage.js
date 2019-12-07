@@ -1,23 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { Trip } from '../trip/Trip.model';
+import { AppStore } from '../store/store';
 
 const storageTokenName = 'trip-planner-storage-token';
-
-/**
- * App Storage Object - Used as default storage if no local storage was detected
- */
-export const appStorage = {
-  // The saved list of trips
-  tripList: [],
-  filterOptions: {
-    searchText: '',
-    category: '',
-  },
-  // You can only edit fields through your current trip object
-  currentTrip: new Trip(),
-  isDetailPanelActive: false,
-  isNewTrip: false,
-};
 
 /**
  * Get State from local storage.
@@ -28,7 +12,7 @@ export const getAppStorage = () => {
     // FIXME: Make sure you transform this data to not hold security stuff
     return jwt.verify(token, process.env.REACT_APP_JWT_SECRET);
   } catch (err) {
-    return appStorage;
+    return AppStore;
   }
 };
 

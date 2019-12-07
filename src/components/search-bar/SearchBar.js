@@ -27,7 +27,7 @@ export default class SearchBar extends React.Component {
 
   render() {
     return (
-      <form id="search" onSubmit={this.handleSubmit}>
+      <form className="search-bar" onSubmit={this.handleSubmit}>
         <label htmlFor="search-text">
           <span role="img" aria-label="magnifying glass" className="icon">
             🔎

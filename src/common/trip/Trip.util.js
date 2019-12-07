@@ -110,22 +110,22 @@ export const findTripById = (tripList, id) =>
 
 // ========================= REMINDERS ===============================
 
-export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+/**
+ * Trip List with set reminders
+ * @param {Trip[]} tripList
+ */
+export const tripsWithReminders = tripList =>
+  tripList.filter(trip => trip.reminder.isSet);
 
 /**
- * Promisified `setTimeout` function with calculated execution time
+ * Time from now until the reminder
  * @param {Trip} trip
- * @returns {Promise<Trip>}
  */
-export const setReminder = trip =>
-  new Promise((resolve, reject) => {
-    const timeToExec = trip.reminder.dateTime
-      ? Date.parse(trip.reminder.dateTime) - Date.now()
-      : -1;
-    console.log(timeToExec);
-    if (trip.reminder.isSet && timeToExec >= 0) {
-      setTimeout(resolve(trip), timeToExec);
-    } else {
-      reject('No reminder needed');
-    }
-  });
+export const timeToExec = trip =>
+  trip.reminder.dateTime ? Date.parse(trip.reminder.dateTime) - Date.now() : -1;
+
+/**
+ * Promisified `setTimeout` function
+ * @param {Number} ms Number of milliseconds to elapse before execution
+ */
+export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));

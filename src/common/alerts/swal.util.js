@@ -5,7 +5,12 @@ import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
 
-export const handleSetupModal = async trip => {
+/**
+ * Sequence of steps when a reminder notifies a user of their upcoming trip
+ * @param {Trip} trip
+ * @returns Updated trip reminder and detail options
+ */
+export const handleReminderModal = async trip => {
   const result = await MySwal.fire({
     title: <p>{`${trip.title} - Reminder`}</p>,
     showConfirmButton: true,
@@ -24,6 +29,7 @@ export const handleSetupModal = async trip => {
       title: 'How Long?',
       input: 'select',
       inputOptions: {
+        thirtySec: '30 sec',
         fiveMin: '5 min',
         fifteenMin: '15 min',
         oneHour: '1 hour',
@@ -34,6 +40,9 @@ export const handleSetupModal = async trip => {
     });
     const minute = 60000;
     switch (snooze) {
+      case 'thirtySec':
+        trip.reminder.dateTime = new Date(Date.now() + 0.5 * minute);
+        break;
       case 'fiveMin':
         trip.reminder.dateTime = new Date(Date.now() + 5 * minute);
         break;
