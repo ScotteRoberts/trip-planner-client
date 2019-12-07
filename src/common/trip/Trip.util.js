@@ -1,3 +1,6 @@
+import { PlanningStates } from './Trip.model';
+import { completedTodos } from '../todo/Todo.util';
+
 // ========================= HELPERS ===============================
 
 /**
@@ -5,7 +8,16 @@
  * @param {Date} startDate
  * @param {Date} endDate
  */
-export const calcTripDuration = (startDate, endDate) => endDate - startDate;
+export const calcTripDuration = (startDate, endDate) =>
+  new Date(new Date(endDate) - new Date(startDate));
+
+export const calcPlanningState = todos => {
+  const numOfCompletedTodos = completedTodos(todos);
+  console.log(numOfCompletedTodos);
+  if (numOfCompletedTodos === 0) return PlanningStates.created;
+  else if (numOfCompletedTodos < todos.length) return PlanningStates.inProgress;
+  else return PlanningStates.ready;
+};
 
 /**
  * Helper for string comparison

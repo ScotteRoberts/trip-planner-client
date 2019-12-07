@@ -32,14 +32,14 @@ export default class SearchBar extends React.Component {
           <span role="img" aria-label="magnifying glass" className="icon">
             🔎
           </span>
+          <input
+            type="text"
+            name="search-text"
+            id="search-text"
+            value={this.state.searchText}
+            onChange={this.handleChange}
+          />
         </label>
-        <input
-          type="text"
-          name="search-text"
-          id="search-text"
-          value={this.state.searchText}
-          onChange={this.handleChange}
-        />
         <button type="submit">Go!</button>
       </form>
     );

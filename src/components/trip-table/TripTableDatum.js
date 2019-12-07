@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import './TripTableDatum.css';
 
 import Emoji from '../emjoi/Emoji';
-import { completedTodos, incompleteTodos } from '../../common/todo/Todo.util';
+import {
+  completedTodos,
+  incompleteTodos,
+  parseTimeToDays,
+} from '../../common/todo/Todo.util';
 import { DateStringType } from '../../common/trip/Trip.model';
 
 const TripTableDatum = props => {
@@ -22,7 +26,7 @@ const TripTableDatum = props => {
         <button onClick={() => props.onTripSelect(props.trip)}>{title}</button>
       </td>
       <td>{destination}</td>
-      <td>{tripDuration}</td>
+      <td>{`${parseTimeToDays(tripDuration)} Days`}</td>
       <td>{category}</td>
       <td>
         {reminder.isSet ? (
@@ -31,8 +35,8 @@ const TripTableDatum = props => {
           <Emoji label="not here">⛔️</Emoji>
         )}
       </td>
-      <td>{completedTodos(todos)}</td>
       <td>{incompleteTodos(todos)}</td>
+      <td>{completedTodos(todos)}</td>
       <td>{planningState}</td>
     </tr>
   );

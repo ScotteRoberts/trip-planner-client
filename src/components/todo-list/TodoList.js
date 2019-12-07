@@ -7,7 +7,6 @@ const TodoList = props => {
   const [currentTodo, setCurrentTodo] = useState(new TodoClass());
 
   const handleAddTodo = event => {
-    event.preventDefault();
     props.onAddTodo(currentTodo);
     setCurrentTodo(new TodoClass());
   };
@@ -15,7 +14,8 @@ const TodoList = props => {
   // TODO: const handleEditTodo = event => {};
 
   return (
-    <div>
+    <div className="todo-list">
+      <h3>Todo List</h3>
       {props.todos.map((todo, index) => (
         <Todo
           key={index}

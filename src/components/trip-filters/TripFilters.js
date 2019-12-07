@@ -19,13 +19,10 @@ const TripFilters = props => {
   };
 
   return (
-    <div>
+    <div className="trip-filters">
       <h2>Filters</h2>
       <SearchBar onSearch={handleSearch} />
       <CategoryDropdown onChange={handleCategoryChange} />
-      {/* TODO: Style up the button and make it connect up */}
-      <h2>Other</h2>
-      <button onClick={props.onAddTrip}>Add a trip</button>
     </div>
   );
 };
@@ -36,7 +33,6 @@ TripFilters.propTypes = {
     category: PropTypes.string.isRequired,
   }),
   setFilterOptions: PropTypes.func.isRequired,
-  onAddTrip: PropTypes.func.isRequired,
 };
 
 export default TripFilters;

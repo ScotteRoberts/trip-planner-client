@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /**
  * Helper - get number of completed todos
  * @param {Todo[]} todoList
@@ -11,6 +13,8 @@ export const completedTodos = todoList =>
  */
 export const incompleteTodos = todoList =>
   todoList.filter(todo => !todo.isCompleted).length;
+
+export const parseTimeToDays = date => dayjs(date).$D;
 
 /**
  * Add todo to given todolist

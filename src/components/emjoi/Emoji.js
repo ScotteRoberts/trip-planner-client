@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Emoji = props => (
-  <span role="img" aria-label={props.label}>
+  <span role="img" aria-label={props.label} {...props}>
     {props.children}
   </span>
 );

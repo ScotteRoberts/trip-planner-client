@@ -20,6 +20,8 @@ import {
   filterTrips,
   deleteTripById,
   updateTripList,
+  calcPlanningState,
+  calcTripDuration,
 } from '../../common/trip/Trip.util';
 
 // Todos
@@ -80,12 +82,30 @@ class App extends React.Component {
     if (event) event.preventDefault();
     // Update the trips list
 
+    const tempCurrentTrip = { ...this.state.currentTrip };
+
     this.setState(
       prevState => {
+        console.log(tempCurrentTrip);
+
+        // Calculate new trip progress
+        tempCurrentTrip.planningState = calcPlanningState(
+          tempCurrentTrip.todos
+        );
+
+        // Calculate trip duration
+        tempCurrentTrip.tripDuration = calcTripDuration(
+          tempCurrentTrip.startDate,
+          tempCurrentTrip.endDate
+        );
+
+        // Update the list of trips
         const updatedTripList = updateTripList(
           prevState.tripList,
-          this.state.currentTrip
+          tempCurrentTrip
         );
+
+        // Set the state
         return {
           tripList: updatedTripList,
           isDetailPanelActive: !prevState.isDetailPanelActive,
@@ -151,7 +171,6 @@ class App extends React.Component {
   };
 
   handleReminderSet = event => {
-    event.preventDefault();
     this.setState(prevState => ({
       currentTrip: {
         ...prevState.currentTrip,
@@ -212,9 +231,10 @@ class App extends React.Component {
         </FilterPanel>
 
         <TripTable
-          onTripSelect={this.handleSelectingTrip}
           tripList={filterTrips(tripList, filterOptions)}
           setTripList={this.setTripList}
+          onTripSelect={this.handleSelectingTrip}
+          onAddNewTrip={this.handleAddNewTrip}
         />
 
         <DetailPanel isActive={isDetailPanelActive}>

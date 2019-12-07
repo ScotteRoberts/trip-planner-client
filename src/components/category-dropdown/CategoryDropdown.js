@@ -30,9 +30,9 @@ export default class CategoryDropdown extends Component {
         value={this.state.currentOption}
       >
         <option value="">- Select a Category -</option>
-        <option value="none">None</option>
-        <option value="businessTrip">Business Trip</option>
-        <option value="vacation">Vacation</option>
+        <option value="None">None</option>
+        <option value="Business Trip">Business Trip</option>
+        <option value="Vacation">Vacation</option>
       </select>
     );
   }

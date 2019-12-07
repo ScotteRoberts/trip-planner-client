@@ -12,10 +12,7 @@ const Todo = props => {
     return onDelete(todo);
   };
 
-  const handleChecked = event => {
-    event.preventDefault();
-    return onChecked(todo);
-  };
+  const handleChecked = event => onChecked(todo);
 
   return (
     <div>
@@ -23,7 +20,7 @@ const Todo = props => {
         type="checkbox"
         name={todo.id}
         id={todo.id}
-        checked={!todo.isCompleted}
+        checked={todo.isCompleted}
         onChange={handleChecked}
       />
       <label htmlFor={todo.id}>{todo.description}</label>

@@ -18,6 +18,20 @@ import {
 } from '../../common/trip/Trip.validations';
 
 class TripForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      touched: {
+        title: false,
+        destination: false,
+        description: false,
+        startDate: false,
+        endDate: false,
+        reminder: false,
+      },
+    };
+  }
   // TODO: Validate that the data exists before submission
 
   static propTypes = {
@@ -30,6 +44,7 @@ class TripForm extends Component {
       title: PropTypes.string.isRequired,
       destination: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
+      category: PropTypes.string.isRequired,
       startDate: DateStringType.isRequired,
       endDate: DateStringType.isRequired,
       reminder: PropTypes.shape({
@@ -53,6 +68,7 @@ class TripForm extends Component {
       title,
       destination,
       description,
+      category,
       startDate,
       endDate,
       reminder,
@@ -69,6 +85,7 @@ class TripForm extends Component {
     // TODO: Make sure to make a submit handler for this form! Prevent those defaults!
     return (
       <form onSubmit={this.props.onSaveTrip} className="trip-form">
+        <h2>Plan New Trip</h2>
         <div className="trip-form-fields">
           <label className="input-container" htmlFor="title">
             Title:
@@ -107,14 +124,17 @@ class TripForm extends Component {
             Category:
             <CategoryDropdown
               name="category"
+              defaultValue={category}
               onChange={newCategory =>
                 this.props.onNamedChange('category', newCategory)
               }
             />
           </div>
+        </div>
 
-          {/* FIXME: Date Picker is broken due to incorrect date formats */}
+        {/* ====================================================== */}
 
+        <div>
           <div>
             Start Date:
             <DatePicker
@@ -134,27 +154,26 @@ class TripForm extends Component {
           </div>
         </div>
 
+        <div>
+          <h3>Set Reminder:</h3>
+          <div>
+            <input
+              type="checkbox"
+              name="reminder"
+              id="reminder"
+              checked={reminder.isSet}
+              onChange={this.props.onReminderSet}
+            />
+            <DateTimePicker
+              onChange={date => this.props.onReminderChange('dateTime', date)}
+              value={new Date(reminder.dateTime)}
+            />
+          </div>
+        </div>
+
         {/* ====================================================== */}
 
         {this.props.children}
-
-        {/* ====================================================== */}
-
-        <label htmlFor="reminder">
-          Set Reminder:
-          <input
-            type="checkbox"
-            name="reminder"
-            id="reminder"
-            checked={reminder.isSet}
-            onChange={this.props.onReminderSet}
-          />
-        </label>
-        <DateTimePicker
-          name="reminder"
-          onChange={date => this.props.onReminderChange('dateTime', date)}
-          value={new Date(reminder.dateTime)}
-        />
 
         {/* ====================================================== */}
 
