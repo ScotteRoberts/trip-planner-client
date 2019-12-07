@@ -105,3 +105,25 @@ export const updateTripList = (tripList, updatedTrip) => {
   }
   return updatedTripList;
 };
+
+// ========================= REMINDERS ===============================
+
+export const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * Promisified `setTimeout` function with calculated execution time
+ * @param {Trip} trip
+ * @returns {Promise<Trip>}
+ */
+export const setReminder = trip =>
+  new Promise((resolve, reject) => {
+    const timeToExec = trip.reminder.dateTime
+      ? Date.parse(trip.reminder.dateTime) - Date.now()
+      : -1;
+    console.log(timeToExec);
+    if (trip.reminder.isSet && timeToExec >= 0) {
+      setTimeout(resolve(trip), timeToExec);
+    } else {
+      reject('No reminder needed');
+    }
+  });

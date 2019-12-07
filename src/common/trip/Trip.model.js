@@ -1,6 +1,5 @@
 import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
-import { Todo } from '../todo/Todo.model';
 
 const thirtyMinFromNow = new Date(Date.now() + 30 * 60000);
 

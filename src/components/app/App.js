@@ -1,11 +1,18 @@
 import React from 'react';
 import './App.css';
+
 import FilterPanel from '../filter-panel';
 import TripTable from '../trip-table';
 import DetailPanel from '../detail-panel';
 import TripForm from '../trip-form';
 import TodoList from '../todo-list';
 import TripFilters from '../trip-filters';
+
+// Alerts
+import {
+  handleSetupModal,
+  confirmSuccessfulAction,
+} from '../../common/alerts/swal.util';
 
 // Auth
 import {
@@ -22,6 +29,7 @@ import {
   updateTripList,
   calcPlanningState,
   calcTripDuration,
+  wait,
 } from '../../common/trip/Trip.util';
 
 // Todos
@@ -40,6 +48,31 @@ class App extends React.Component {
   componentDidMount() {
     const token = getAppStorage();
     this.setState(token);
+
+    // Grab state from local storage
+    const appState = getAppStorage();
+
+    // Set the reminders for each of the trips
+    appState.tripList.forEach(trip => {
+      const timeToExec = trip.reminder.dateTime
+        ? Date.parse(trip.reminder.dateTime) - Date.now()
+        : -1;
+
+      wait(timeToExec)
+        .then(() => handleSetupModal(trip))
+        .then(result => {
+          if (result.openDetails) {
+            return this.setState({ isDetailPanelActive: true });
+          } else {
+            return this.setState(prevState => {
+              const newTripList = [...prevState.tripList];
+              const updatedList = updateTripList(newTripList, result.trip);
+              return { tripList: updatedList };
+            });
+          }
+        })
+        .catch(err => console.error(err));
+    });
   }
 
   // ===================== GENERAL ================================
@@ -111,7 +144,10 @@ class App extends React.Component {
           isDetailPanelActive: !prevState.isDetailPanelActive,
         };
       },
-      () => setAppStorage({ ...this.state })
+      () => {
+        setAppStorage({ ...this.state });
+        confirmSuccessfulAction('Save');
+      }
     );
   };
 
@@ -137,7 +173,10 @@ class App extends React.Component {
           isDetailPanelActive: !prevState.isDetailPanelActive,
         };
       },
-      () => setAppStorage({ ...this.state })
+      () => {
+        setAppStorage({ ...this.state });
+        confirmSuccessfulAction('Delete');
+      }
     );
   };
 
