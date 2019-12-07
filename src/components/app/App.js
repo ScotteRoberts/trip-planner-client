@@ -58,20 +58,22 @@ class App extends React.Component {
         ? Date.parse(trip.reminder.dateTime) - Date.now()
         : -1;
 
-      wait(timeToExec)
-        .then(() => handleSetupModal(trip))
-        .then(result => {
-          if (result.openDetails) {
-            return this.setState({ isDetailPanelActive: true });
-          } else {
-            return this.setState(prevState => {
-              const newTripList = [...prevState.tripList];
-              const updatedList = updateTripList(newTripList, result.trip);
-              return { tripList: updatedList };
-            });
-          }
-        })
-        .catch(err => console.error(err));
+      // Make sure you don't set previous reminders or if they don't need to be set.
+      if (trip.reminder.isSet && timeToExec > Date.now())
+        wait(timeToExec)
+          .then(() => handleSetupModal(trip))
+          .then(result => {
+            if (result.openDetails) {
+              return this.setState({ isDetailPanelActive: true });
+            } else {
+              return this.setState(prevState => {
+                const newTripList = [...prevState.tripList];
+                const updatedList = updateTripList(newTripList, result.trip);
+                return { tripList: updatedList };
+              });
+            }
+          })
+          .catch(err => console.error(err));
     });
   }
 
@@ -119,18 +121,13 @@ class App extends React.Component {
 
     this.setState(
       prevState => {
-        console.log(tempCurrentTrip);
+        const { todos, startDate, endDate } = tempCurrentTrip;
 
         // Calculate new trip progress
-        tempCurrentTrip.planningState = calcPlanningState(
-          tempCurrentTrip.todos
-        );
+        tempCurrentTrip.planningState = calcPlanningState(todos);
 
         // Calculate trip duration
-        tempCurrentTrip.tripDuration = calcTripDuration(
-          tempCurrentTrip.startDate,
-          tempCurrentTrip.endDate
-        );
+        tempCurrentTrip.tripDuration = calcTripDuration(startDate, endDate);
 
         // Update the list of trips
         const updatedTripList = updateTripList(
@@ -145,7 +142,9 @@ class App extends React.Component {
         };
       },
       () => {
+        // Persist to Local Storage
         setAppStorage({ ...this.state });
+        // Send Feedback to the user
         confirmSuccessfulAction('Save');
       }
     );
@@ -174,7 +173,9 @@ class App extends React.Component {
         };
       },
       () => {
+        // Persist to local storage
         setAppStorage({ ...this.state });
+        // Give feedback to the user
         confirmSuccessfulAction('Delete');
       }
     );
@@ -233,7 +234,6 @@ class App extends React.Component {
   };
 
   handleAddTodo = todo => {
-    todo.isCompleted = !todo.isCompleted;
     const newTodoList = addTodo(this.state.currentTrip.todos, todo);
     this.setTodoList(newTodoList);
   };
@@ -290,6 +290,8 @@ class App extends React.Component {
             onReminderSet={this.handleReminderSet}
           >
             <TodoList
+              maxHeight="25vh"
+              height="25vh"
               todos={currentTrip.todos}
               onAddTodo={this.handleAddTodo}
               onChecked={this.handleCheckedTodo}

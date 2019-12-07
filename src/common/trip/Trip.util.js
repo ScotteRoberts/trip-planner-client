@@ -1,6 +1,35 @@
 import { PlanningStates } from './Trip.model';
 import { completedTodos } from '../todo/Todo.util';
 
+// ========================= CRUD ===============================
+
+export const addTripById = (tripList, trip) => {};
+
+// FIXME: This is dumb to use for a simple checkbox
+/**
+ * Update single record
+ * @param {Trip[]} tripList
+ * @param {Trip} updatedTrip Update record
+ */
+export const updateTripList = (tripList, updatedTrip) => {
+  const updatedTripList = [...tripList];
+  const updateIndex = tripList.findIndex(trip => trip.id === updatedTrip.id);
+  if (updateIndex > -1) {
+    updatedTripList.splice(updateIndex, 1, updatedTrip);
+  } else {
+    updatedTripList.push(updatedTrip);
+  }
+  return updatedTripList;
+};
+
+/**
+ * Delete single trip
+ * @param {Trip[]} tripList
+ * @param {String} id
+ */
+export const deleteTripById = (tripList, id) =>
+  tripList.filter(trip => trip.id !== id);
+
 // ========================= HELPERS ===============================
 
 /**
@@ -78,33 +107,6 @@ export const filterTripsById = (trips, id) =>
  */
 export const findTripById = (tripList, id) =>
   tripList.filter(trip => trip.id === id)[0];
-
-// ========================= CRUD ===============================
-
-/**
- * Delete single trip
- * @param {Trip[]} tripList
- * @param {String} id
- */
-export const deleteTripById = (tripList, id) =>
-  tripList.filter(trip => trip.id !== id);
-
-// FIXME: This is dumb to use for a simple checkbox
-/**
- * Update single record
- * @param {Trip[]} tripList
- * @param {Trip} updatedTrip Update record
- */
-export const updateTripList = (tripList, updatedTrip) => {
-  const updatedTripList = [...tripList];
-  const updateIndex = tripList.findIndex(trip => trip.id === updatedTrip.id);
-  if (updateIndex > -1) {
-    updatedTripList.splice(updateIndex, 1, updatedTrip);
-  } else {
-    updatedTripList.push(updatedTrip);
-  }
-  return updatedTripList;
-};
 
 // ========================= REMINDERS ===============================
 

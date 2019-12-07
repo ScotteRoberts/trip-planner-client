@@ -120,6 +120,7 @@ class TripForm extends Component {
             />
           </label>
 
+          {/* FIXME: This will not reset on a new form */}
           <div className="input-container">
             Category:
             <CategoryDropdown

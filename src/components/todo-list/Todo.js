@@ -14,6 +14,8 @@ const Todo = props => {
 
   const handleChecked = event => onChecked(todo);
 
+  console.log(todo.isCompleted);
+
   return (
     <div>
       <input

@@ -1,20 +1,6 @@
 import dayjs from 'dayjs';
 
-/**
- * Helper - get number of completed todos
- * @param {Todo[]} todoList
- */
-export const completedTodos = todoList =>
-  todoList.filter(todo => todo.isCompleted).length;
-
-/**
- * Helper - get number of incomplete todos
- * @param {Todo[]} todoList
- */
-export const incompleteTodos = todoList =>
-  todoList.filter(todo => !todo.isCompleted).length;
-
-export const parseTimeToDays = date => dayjs(date).$D;
+// ============================= CRUD =============================
 
 /**
  * Add todo to given todolist
@@ -50,3 +36,23 @@ export const updateTodoById = (todoList, updatedTodo) => {
   }
   return updatedTodoList;
 };
+
+// ============================= FILTERS =============================
+
+/**
+ * Helper - get number of completed todos
+ * @param {Todo[]} todoList
+ */
+export const completedTodos = todoList =>
+  todoList.filter(todo => todo.isCompleted).length;
+
+/**
+ * Helper - get number of incomplete todos
+ * @param {Todo[]} todoList
+ */
+export const incompleteTodos = todoList =>
+  todoList.filter(todo => !todo.isCompleted).length;
+
+// ============================= HELPERS =============================
+
+export const parseTimeToDays = date => dayjs(date).$D;

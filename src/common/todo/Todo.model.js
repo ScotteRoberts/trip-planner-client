@@ -8,7 +8,7 @@ export class Todo {
   constructor() {
     this.id = uuid();
     this.isCompleted = false;
-    this.description = 'hey';
+    this.description = '';
   }
 }
 
