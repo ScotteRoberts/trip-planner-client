@@ -1,7 +1,7 @@
 /* App level general styling */
 
 :root {
-  --border-radius: 15px;
+  --border-radius: 5px;
 }
 
 body {
@@ -16,4 +16,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input[type='text'] {
+  margin: 0.4em 0;
+  border-radius: var(--border-radius);
+  padding: 0.8em;
 }

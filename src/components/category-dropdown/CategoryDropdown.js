@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './CategoryDropdown.css';
 
 // HACK: Clean this up to be reusable later
 export default class CategoryDropdown extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentOption: this.props.defaultValue,
-    };
-  }
-
   handleChange = event => {
-    // capture the input data from the event
-    // update state
-    this.setState(
-      {
-        currentOption: event.target.value,
-      },
-      () => this.props.onChange(this.state.currentOption)
-    );
+    this.props.onChange(event.target.value);
   };
 
   render() {
@@ -27,9 +14,9 @@ export default class CategoryDropdown extends Component {
         name={this.props.name}
         form={this.props.form}
         onChange={this.handleChange}
-        value={this.state.currentOption}
+        value={this.props.category}
+        className="category-dropdown"
       >
-        <option value="">- Select a Category -</option>
         <option value="None">None</option>
         <option value="Business Trip">Business Trip</option>
         <option value="Vacation">Vacation</option>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './TripFilters.css';
-import SearchBar from '../search-bar';
+import SearchBar from '../controlled-input-form';
 import CategoryDropdown from '../category-dropdown';
 
 const TripFilters = props => {
@@ -10,8 +10,8 @@ const TripFilters = props => {
     props.setFilterOptions(newOptions);
   };
 
-  const handleSearch = searchText => {
-    handleFilterChange('searchText', searchText);
+  const handleSearch = inputText => {
+    handleFilterChange('searchText', inputText);
   };
 
   const handleCategoryChange = category => {
@@ -21,8 +21,20 @@ const TripFilters = props => {
   return (
     <div className="trip-filters">
       <h2>Filters</h2>
-      <SearchBar onSearch={handleSearch} />
-      <CategoryDropdown onChange={handleCategoryChange} />
+      <SearchBar
+        icon="🔎"
+        placeholder="Search"
+        aria-label="magnifying-glasss"
+        buttonText="Go!"
+        onSubmit={handleSearch}
+        value={props.filterOptions.searchText}
+      />
+      <CategoryDropdown
+        onChange={handleCategoryChange}
+        value={props.filterOptions.category}
+      />
+      <h2>Actions</h2>
+      <button onClick={props.onAddNewTrip}>Add a trip</button>
     </div>
   );
 };
@@ -33,6 +45,7 @@ TripFilters.propTypes = {
     category: PropTypes.string.isRequired,
   }),
   setFilterOptions: PropTypes.func.isRequired,
+  onAddNewTrip: PropTypes.func.isRequired,
 };
 
 export default TripFilters;

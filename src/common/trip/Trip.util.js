@@ -42,7 +42,6 @@ export const calcTripDuration = (startDate, endDate) =>
 
 export const calcPlanningState = todos => {
   const numOfCompletedTodos = completedTodos(todos);
-  console.log(numOfCompletedTodos);
   if (numOfCompletedTodos === 0) return PlanningStates.created;
   else if (numOfCompletedTodos < todos.length) return PlanningStates.inProgress;
   else return PlanningStates.ready;

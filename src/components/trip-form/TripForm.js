@@ -4,6 +4,7 @@ import './TripForm.css';
 
 import DateTimePicker from 'react-datetime-picker';
 import DatePicker from 'react-date-picker';
+import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import CategoryDropdown from '../category-dropdown';
 
 import { TripType } from '../../common/trip/Trip.model';
@@ -74,7 +75,7 @@ class TripForm extends Component {
     // TODO: Make sure to make a submit handler for this form! Prevent those defaults!
     return (
       <form onSubmit={this.props.onSaveTrip} className="trip-form">
-        <h2>Plan New Trip</h2>
+        <h2>Plan A New Trip</h2>
         <div className="trip-form-fields">
           <label className="input-container" htmlFor="title">
             Title:
@@ -83,6 +84,7 @@ class TripForm extends Component {
               name="title"
               id="title"
               value={title}
+              placeholder="title"
               onChange={this.props.onInputChange}
             />
           </label>
@@ -93,6 +95,7 @@ class TripForm extends Component {
               type="text"
               name="destination"
               id="destination"
+              placeholder="destination"
               value={destination}
               onChange={this.props.onInputChange}
             />
@@ -104,6 +107,7 @@ class TripForm extends Component {
               type="text"
               name="description"
               id="description"
+              placeholder="description"
               value={description}
               onChange={this.props.onInputChange}
             />
@@ -114,7 +118,7 @@ class TripForm extends Component {
             Category:
             <CategoryDropdown
               name="category"
-              defaultValue={category}
+              value={category}
               onChange={newCategory =>
                 this.props.onNamedChange('category', newCategory)
               }
@@ -129,6 +133,7 @@ class TripForm extends Component {
             Start Date:
             <DatePicker
               name="start-date"
+              required
               onChange={date => this.props.onNamedChange('startDate', date)}
               value={new Date(startDate)}
             />
@@ -138,6 +143,7 @@ class TripForm extends Component {
             End Date:
             <DatePicker
               name="end-date"
+              required
               onChange={date => this.props.onNamedChange('endDate', date)}
               value={new Date(endDate)}
             />
@@ -167,7 +173,7 @@ class TripForm extends Component {
 
         {/* ====================================================== */}
 
-        <div>
+        <div className="trip-form--toolbar">
           <button type="submit" disabled={!isValidSubmission}>
             Save
           </button>

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import './TripTable.css';
 import TripTableDatum from './TripTableDatum';
 
+import { TripType } from '../../common/trip/Trip.model';
+
 const listingHeaders = [
   'Title',
   'Destination',
@@ -10,12 +12,13 @@ const listingHeaders = [
   'Category',
   'Reminder Set',
   'Items Needed',
-  '# of Items Completed',
+  'Items Completed',
   'Trip Planning State',
 ];
 
 const TripTable = props => (
-  <div>
+  // FIXME: The overflow should be done in a container component?
+  <div style={{ overflowX: 'auto' }}>
     <table className="trip-table">
       <thead>
         <tr>
@@ -35,15 +38,12 @@ const TripTable = props => (
         ))}
       </tbody>
     </table>
-
-    <button onClick={props.onAddNewTrip}>Add a trip</button>
   </div>
 );
 
 TripTable.propTypes = {
-  tripList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  tripList: PropTypes.arrayOf(TripType).isRequired,
   onTripSelect: PropTypes.func.isRequired,
-  onAddNewTrip: PropTypes.func.isRequired,
 };
 
 export default TripTable;

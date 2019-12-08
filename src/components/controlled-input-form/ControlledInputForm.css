@@ -1,28 +1,30 @@
-.search-bar {
+.controlled-input-form {
   display: flex;
   /* background-color: var(--snips-white); */
   border-radius: var(--border-radius);
 }
 
-.search-bar:focus-within {
+.controlled-input-form:focus-within {
   box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2);
 }
 
-.search-bar label {
+.controlled-input-form label {
+  display: flex;
+  width: 100%;
   padding: 5px 10px;
   cursor: pointer;
   background-color: white;
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
-.search-bar input {
-  flex: 1 0 auto;
+.controlled-input-form input {
+  width: 100%;
   outline: none;
   border: 0;
   padding: 5px;
 }
 
-.search-bar button {
+.controlled-input-form button {
   border: none;
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
   outline: none;
@@ -33,6 +35,6 @@
   transition: all 250ms;
 }
 
-.search-bar button:hover {
+.controlled-input-form button:hover {
   background-color: orange;
 }

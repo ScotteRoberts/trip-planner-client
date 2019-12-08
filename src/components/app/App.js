@@ -262,8 +262,7 @@ class App extends React.Component {
     this.setTodoList(newTodoList);
   };
 
-  handleCheckedTodo = todo => {
-    todo.isCompleted = !todo.isCompleted;
+  handleEditTodo = todo => {
     const newTodoList = updateTodoById(this.state.currentTrip.todos, todo);
     this.setTodoList(newTodoList);
   };
@@ -289,7 +288,7 @@ class App extends React.Component {
           <TripFilters
             filterOptions={filterOptions}
             setFilterOptions={this.setFilterOptions}
-            onAddTrip={this.handleAddNewTrip}
+            onAddNewTrip={this.handleAddNewTrip}
           />
         </FilterPanel>
 
@@ -314,10 +313,11 @@ class App extends React.Component {
             onReminderSet={this.handleReminderSet}
           >
             <TodoList
-              maxHeight="25vh"
-              height="25vh"
+              maxHeight="20vh"
+              height="20vh"
               todos={currentTrip.todos}
               onAddTodo={this.handleAddTodo}
+              onEditTodo={this.handleEditTodo}
               onChecked={this.handleCheckedTodo}
               onDelete={this.handleDeleteTodo}
             />

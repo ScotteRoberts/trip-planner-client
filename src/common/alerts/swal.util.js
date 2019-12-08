@@ -58,7 +58,6 @@ export const handleReminderModal = async trip => {
       default:
         break;
     }
-    console.log('Modified Trip', trip.reminder);
 
     return { trip, openDetails: false };
   }

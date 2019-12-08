@@ -1,7 +1,6 @@
 .trip-form {
   padding: 1rem;
   display: grid;
-  gap: 1rem;
 }
 
 .trip-form-fields {
@@ -13,4 +12,10 @@
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+}
+
+.trip-form--toolbar {
+  margin: 1em;
+  display: flex;
+  justify-content: space-evenly;
 }

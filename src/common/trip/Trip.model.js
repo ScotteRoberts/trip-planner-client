@@ -5,6 +5,18 @@ import { TodoType } from '../todo/Todo.model';
 
 const thirtyMinFromNow = new Date(Date.now() + 30 * 60000);
 
+export const PlanningStates = {
+  created: 'Created',
+  inProgress: 'In Progress',
+  ready: 'Ready',
+};
+
+export const VacationState = {
+  none: 'None',
+  business: 'Business',
+  vacation: 'Vacation',
+};
+
 /**
  * Trip Model
  */
@@ -17,14 +29,14 @@ export class Trip {
     this.startDate = thirtyMinFromNow;
     this.endDate = thirtyMinFromNow;
     this.tripDuration = '0';
-    this.category = '';
+    this.category = VacationState.none;
     this.reminder = {
       isSet: false,
       // Add default to 30 minutes from now
       dateTime: thirtyMinFromNow,
     };
     this.todos = [];
-    this.planningState = 'created';
+    this.planningState = PlanningStates.created;
   }
 }
 
@@ -48,15 +60,3 @@ export const TripType = PropTypes.shape({
   todos: PropTypes.arrayOf(TodoType),
   planningState: PropTypes.string,
 });
-
-export const PlanningStates = {
-  created: 'Created',
-  inProgress: 'In Progress',
-  ready: 'Ready',
-};
-
-export const VacationState = {
-  none: 'None',
-  business: 'Business',
-  vacation: 'Vacation',
-};
