@@ -4,10 +4,6 @@ This is the SPA Trip Planner Coding Challenge provided by [Stamps.com](https://w
 
 To not reveal any licensed documents, I will refrain from sharing any sensitive information about the process of this coding challenge.
 
-## Screenshot
-
-![Application screenshot](assets/img/trip-planner-screenshot.png) _Single page view with sample data_
-
 ## Special Thanks
 
 I wanted to give special thanks to some open-source libraries used for this project that made my life so much easier:
