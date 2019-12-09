@@ -37,6 +37,7 @@ const TripTableDatum = props => {
       aria-label={`Trip Record for ${title}`}
       onClick={handleRowSelect}
       onKeyDown={handleRowSelect}
+      className="trip-table-datum"
     >
       <td>{title}</td>
       <td>{destination}</td>
