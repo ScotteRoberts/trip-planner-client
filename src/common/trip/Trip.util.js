@@ -3,8 +3,6 @@ import { completedTodos } from '../todo/Todo.util';
 
 // ========================= CRUD ===============================
 
-export const addTripById = (tripList, trip) => {};
-
 // FIXME: This is dumb to use for a simple checkbox
 /**
  * Update single record

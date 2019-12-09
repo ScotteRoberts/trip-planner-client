@@ -175,7 +175,6 @@ class TripForm extends Component {
             <CategoryDropdown
               name="category"
               value={category}
-              defaultValue={category}
               onChange={newCategory =>
                 this.props.onNamedChange('category', newCategory)
               }

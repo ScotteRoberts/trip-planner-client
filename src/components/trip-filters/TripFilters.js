@@ -7,7 +7,6 @@ import CategoryDropdown from '../category-dropdown';
 const TripFilters = props => {
   const handleFilterChange = (property, value) => {
     const newOptions = { ...props.filterOptions, [property]: value };
-    console.log(newOptions);
     props.setFilterOptions(newOptions);
   };
 
@@ -33,7 +32,6 @@ const TripFilters = props => {
       <CategoryDropdown
         onChange={handleCategoryChange}
         value={props.filterOptions.category}
-        defaultValue={props.filterOptions.category}
       />
       <h2>Actions</h2>
       <button onClick={props.onAddNewTrip}>Add a trip</button>

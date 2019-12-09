@@ -10,10 +10,8 @@ import { AppStorePropType } from '../../common/store/store';
 import { setAppStorage } from '../../common/tokens/appStorage';
 
 // Alerts
-import {
-  handleReminderModal,
-  confirmSuccessfulAction,
-} from '../../common/alerts/swal.util';
+import { handleReminderModal } from '../alert/Reminder';
+import { confirmSuccessfulAction } from '../alert/Feedback';
 
 // Trips
 import { Trip } from '../../common/trip/Trip.model';
@@ -59,8 +57,6 @@ class App extends React.Component {
       this.setReminder(trip);
     });
   }
-
-  componentDidUpdate() {}
 
   // ===================== TIME KEEPING ===========================
 
@@ -286,6 +282,8 @@ class App extends React.Component {
       isDetailPanelActive,
       isNewTrip,
     } = this.state;
+
+    console.log(filterOptions);
     return (
       <main id="app">
         <PanelLayout isActive>

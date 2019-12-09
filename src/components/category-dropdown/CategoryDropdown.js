@@ -19,18 +19,15 @@ export default class CategoryDropdown extends Component {
   };
 
   handleChange = event => {
-    console.log(event);
     this.props.onChange(event.target.value);
   };
 
   render() {
-    console.log(this.props);
     return (
       <select
         name={this.props.name}
         form={this.props.form}
         onChange={this.handleChange}
-        defaultValue={this.props.value}
         value={this.props.value}
         className={`category-dropdown ${this.props.className}`}
       >

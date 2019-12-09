@@ -1,10 +1,8 @@
 import React from 'react';
+import MySwal from '../../config/sweet-alert/Swal';
+import { parseTimeToDays } from '../../common/todo/Todo.util';
 
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
-// Wrapper around the original Swal library to add support for React components.
-const MySwal = withReactContent(Swal);
+import { TripPropType } from '../../common/trip/Trip.model';
 
 /**
  * Sequence of steps when a reminder notifies a user of their upcoming trip
@@ -13,7 +11,8 @@ const MySwal = withReactContent(Swal);
  */
 export const handleReminderModal = async trip => {
   const result = await MySwal.fire({
-    title: <p>{`${trip.title} - Reminder`}</p>,
+    title: <p>Trip Reminder</p>,
+    html: <TripDetails trip={trip} />,
     showConfirmButton: true,
     showCancelButton: true,
     confirmButtonText: 'Go to Details',
@@ -23,9 +22,9 @@ export const handleReminderModal = async trip => {
   if (result.value) {
     // Open up details
     return { trip, openDetails: true };
-  } else if (result.dismiss === Swal.DismissReason.cancel) {
+  } else if (result.dismiss === MySwal.DismissReason.cancel) {
     // Snooze with options
-    const { value: snooze } = await Swal.fire({
+    const { value: snooze } = await MySwal.fire({
       icon: 'question',
       title: 'How Long?',
       input: 'select',
@@ -65,14 +64,16 @@ export const handleReminderModal = async trip => {
 };
 
 /**
- * Displays a success message in the top right corner of the screen.
- * @param {String} action Displayed action
+ * Shows import trip details
+ * @param {Trip} trip
  */
-export const confirmSuccessfulAction = action =>
-  MySwal.fire({
-    position: 'top-end',
-    icon: 'success',
-    title: `${action} Successful!`,
-    showConfirmButton: false,
-    timer: 1000,
-  });
+const TripDetails = ({ trip }) => (
+  <div>
+    <h2>{`Title: ${trip.title}`}</h2>
+    <h2>{`Destination: ${trip.destination}`}</h2>
+  </div>
+);
+
+TripDetails.propTypes = {
+  trip: TripPropType.isRequired,
+};
