@@ -114,16 +114,12 @@ class TripForm extends Component {
     } = this.props.currentTrip;
 
     const validations = this.validate(this.props.currentTrip);
-    console.log('Validations', validations);
-    console.log('Touched', this.state.touched);
     const isValid = Object.keys(validations).every(field => validations[field]);
     const isDisabled = !isValid;
 
     const shouldMarkError = field => {
       const hasError = !validations[field];
       const shouldShow = this.state.touched[field];
-
-      console.log('Has Error', hasError, 'Should Show', shouldShow);
 
       return hasError && shouldShow;
     };
@@ -174,7 +170,6 @@ class TripForm extends Component {
             />
           </label>
 
-          {/* FIXME: This will not reset on a new form */}
           <div className="input-container">
             Category:
             <CategoryDropdown
