@@ -4,12 +4,12 @@ This is the SPA Trip Planner Coding Challenge provided by [Stamps.com](https://w
 
 To not reveal any licensed documents, I will refrain from sharing any sensitive information about the process of this coding challenge.
 
-## Special Thanks
+## Architecture
 
-I wanted to give special thanks to some open-source libraries used for this project that made my life so much easier:
+This is a client-only solution that uses local storage to save your state.
 
-- [React](https://reactjs.org/) - Wonderful UI Library
-- [Wojciech Maj's Time Creations](http://projects.wojtekmaj.pl/react-daterange-picker/) - Calendar Widgets
-- [SweetAlert2](https://sweetalert2.github.io/) - Awesome modern alerts
-- [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken) - (exactly what it stands for)
-- [UUID](https://www.npmjs.com/package/uuid) - (exactly what it stands for)
+## Roadmap
+
+- **User authentication**: This was not covered due to time restrictions and using a serverless environment. There are plans to use [Auth0](https://auth0.com/) to enable user authentication on a client-only application.
+- **Responsive Design**: Heavier, smarter usage of grid and flexbox to create a responsive design.
+- **Robust Tables**: Allow for sorting, pagination, and other UX friendly features.
