@@ -55,4 +55,9 @@ export const incompleteTodos = todoList =>
 
 // ============================= HELPERS =============================
 
+/**
+ * Helper - gives a days string from a Date object
+ * @param {Date | String} date
+ * @returns {String} days
+ */
 export const parseTimeToDays = date => dayjs(date).$D;

@@ -6,41 +6,25 @@ import DateTimePicker from 'react-datetime-picker';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import CategoryDropdown from '../category-dropdown';
 
-import { TripType } from '../../common/trip/Trip.model';
+import { TripPropType } from '../../common/trip/Trip.model';
 
 import {
   titleValidation,
   destinationValidation,
   descriptionValidation,
   startDateValidation,
-  endDateValidation,
   reminderDateValidation,
+  categoryValidation,
 } from '../../common/trip/Trip.validations';
 
 class TripForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      touched: {
-        title: false,
-        destination: false,
-        description: false,
-        startDate: false,
-        endDate: false,
-        reminder: false,
-      },
-    };
-  }
-  // TODO: Validate that the data exists before submission
-
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node,
     ]).isRequired,
 
-    currentTrip: TripType.isRequired,
+    currentTrip: TripPropType.isRequired,
 
     isNewTrip: PropTypes.bool.isRequired,
     onInputChange: PropTypes.func.isRequired,
@@ -51,6 +35,72 @@ class TripForm extends Component {
     onCancelTrip: PropTypes.func.isRequired,
     onDeleteTrip: PropTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      validFields: {
+        title: false,
+        destination: false,
+        description: false,
+        dateRange: false,
+        reminder: false,
+      },
+      touched: { ...this.validFields },
+    };
+  }
+
+  resetValidation = () => {
+    this.setState({ touched: this.state.validFields });
+  };
+
+  handleSaveTrip = event => {
+    this.resetValidation();
+    this.props.onSaveTrip();
+  };
+
+  handleCancelTrip = event => {
+    this.resetValidation();
+    this.props.onCancelTrip();
+  };
+
+  handleDeleteTrip = event => {
+    this.resetValidation();
+    this.props.onDeleteTrip();
+  };
+
+  validate = currentTrip => {
+    const {
+      title,
+      destination,
+      description,
+      category,
+      startDate,
+      reminder,
+    } = currentTrip;
+    return {
+      title: titleValidation(title),
+      destination: destinationValidation(destination),
+      description: descriptionValidation(description),
+      category: categoryValidation(category),
+      dateRange: startDateValidation(startDate), // TODO: Add end date validations
+      reminder:
+        !reminder.isSet || reminderDateValidation(startDate, reminder.dateTime),
+    };
+  };
+
+  handleBlur = field => evt => {
+    this.setState(prevState => ({
+      touched: { ...prevState.touched, [field]: true },
+    }));
+  };
+
+  canBeSubmitted() {
+    const validations = this.validate(this.props.currentTrip);
+    const isValid = Object.keys(validations).every(field => validations[field]);
+    return isValid;
+  }
 
   render() {
     const {
@@ -63,17 +113,23 @@ class TripForm extends Component {
       reminder,
     } = this.props.currentTrip;
 
-    const isValidSubmission =
-      titleValidation(title) &&
-      destinationValidation(destination) &&
-      descriptionValidation(description) &&
-      startDateValidation(startDate) &&
-      endDateValidation(startDate, endDate) &&
-      (!reminder.isSet || reminderDateValidation(startDate, reminder.dateTime));
+    const validations = this.validate(this.props.currentTrip);
+    console.log('Validations', validations);
+    console.log('Touched', this.state.touched);
+    const isValid = Object.keys(validations).every(field => validations[field]);
+    const isDisabled = !isValid;
 
-    // TODO: Make sure to make a submit handler for this form! Prevent those defaults!
+    const shouldMarkError = field => {
+      const hasError = !validations[field];
+      const shouldShow = this.state.touched[field];
+
+      console.log('Has Error', hasError, 'Should Show', shouldShow);
+
+      return hasError && shouldShow;
+    };
+
     return (
-      <form onSubmit={this.props.onSaveTrip} className="trip-form">
+      <form onSubmit={this.handleSaveTrip} className="trip-form">
         <h2>Plan A New Trip</h2>
         <div className="trip-form-fields">
           <label className="input-container" htmlFor="title">
@@ -85,6 +141,8 @@ class TripForm extends Component {
               value={title}
               placeholder="title"
               onChange={this.props.onInputChange}
+              onBlur={this.handleBlur('title')}
+              className={shouldMarkError('title') ? '--error' : ''}
             />
           </label>
 
@@ -97,6 +155,8 @@ class TripForm extends Component {
               placeholder="destination"
               value={destination}
               onChange={this.props.onInputChange}
+              onBlur={this.handleBlur('destination')}
+              className={shouldMarkError('destination') ? '--error' : ''}
             />
           </label>
 
@@ -109,6 +169,8 @@ class TripForm extends Component {
               placeholder="description"
               value={description}
               onChange={this.props.onInputChange}
+              onBlur={this.handleBlur('description')}
+              className={shouldMarkError('description') ? '--error' : ''}
             />
           </label>
 
@@ -118,9 +180,12 @@ class TripForm extends Component {
             <CategoryDropdown
               name="category"
               value={category}
+              defaultValue={category}
               onChange={newCategory =>
                 this.props.onNamedChange('category', newCategory)
               }
+              onBlur={this.handleBlur('category')}
+              className={shouldMarkError('category') ? '--error' : ''}
             />
           </div>
         </div>
@@ -137,7 +202,10 @@ class TripForm extends Component {
               this.props.onNamedChange('endDate', dateRange[1]);
             }}
             clearIcon={null}
-            className="trip-form-daterange-picker"
+            onBlur={this.handleBlur('dateRange')}
+            className={`trip-form-daterange-picker ${
+              shouldMarkError('dateRange') ? '--error' : ''
+            }`}
           />
         </div>
 
@@ -167,14 +235,14 @@ class TripForm extends Component {
         {/* ====================================================== */}
 
         <div className="trip-form--toolbar">
-          <button type="submit" disabled={!isValidSubmission}>
+          <button type="submit" disabled={isDisabled}>
             Save
           </button>
-          <button type="button" onClick={this.props.onCancelTrip}>
+          <button type="button" onClick={this.handleCancelTrip}>
             Cancel
           </button>
           {!this.props.isNewTrip && (
-            <button type="button" onClick={this.props.onDeleteTrip}>
+            <button type="button" onClick={this.handleDeleteTrip}>
               Delete
             </button>
           )}

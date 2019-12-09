@@ -39,7 +39,7 @@ class TodoList extends React.Component {
     );
   };
 
-  // TODO: const handleEditTodo = event => {};
+  // TODO: make sure you add in the description validation!!
 
   render() {
     const todoListWindow = {

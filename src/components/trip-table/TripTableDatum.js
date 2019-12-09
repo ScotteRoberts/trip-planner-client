@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TripType } from '../../common/trip/Trip.model';
+import { TripPropType } from '../../common/trip/Trip.model';
 import './TripTableDatum.css';
 
 import Emoji from '../emjoi/Emoji';
@@ -41,7 +41,7 @@ const TripTableDatum = props => {
       <td>{title}</td>
       <td>{destination}</td>
       <td>{description}</td>
-      <td>{`${parseTimeToDays(tripDuration)} Days`}</td>
+      <td>{`${parseTimeToDays(tripDuration)} Day(s)`}</td>
       <td>{category}</td>
       <td>
         {reminder.isSet ? (
@@ -58,7 +58,7 @@ const TripTableDatum = props => {
 };
 
 TripTableDatum.propTypes = {
-  trip: TripType,
+  trip: TripPropType,
   onTripSelect: PropTypes.func.isRequired,
 };
 

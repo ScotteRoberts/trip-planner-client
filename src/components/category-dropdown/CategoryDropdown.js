@@ -7,6 +7,7 @@ export default class CategoryDropdown extends Component {
   static propTypes = {
     name: PropTypes.string,
     form: PropTypes.string,
+    className: PropTypes.string,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   };
@@ -14,11 +15,8 @@ export default class CategoryDropdown extends Component {
   static defaultProps = {
     name: '',
     form: '',
+    className: '',
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   handleChange = event => {
     console.log(event);
@@ -34,7 +32,7 @@ export default class CategoryDropdown extends Component {
         onChange={this.handleChange}
         defaultValue={this.props.value}
         value={this.props.value}
-        className="category-dropdown"
+        className={`category-dropdown ${this.props.className}`}
       >
         <option value="">- Select a Category -</option>
         <option value="None">None</option>

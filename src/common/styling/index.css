@@ -1,11 +1,6 @@
-/* Index import css for all styling */
+/* Starting point for all general styling */
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
 @import 'resets.css';
 @import 'style.css';
 @import 'palette.css';
-
-th,
-td {
-  border: black 1px solid;
-}

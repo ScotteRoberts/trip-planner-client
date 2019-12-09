@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Trip, TripType, VacationState } from '../trip/Trip.model';
+import { Trip, TripPropType, VacationState } from '../trip/Trip.model';
 
 /**
  * App Storage Object - Used as default storage if no local storage was detected
@@ -17,13 +17,16 @@ export const AppStore = {
   isNewTrip: false,
 };
 
-export const AppStoreType = PropTypes.shape({
-  tripList: PropTypes.arrayOf(TripType),
+/**
+ * Dev Benefit - Store type to pass into the application
+ */
+export const AppStorePropType = PropTypes.shape({
+  tripList: PropTypes.arrayOf(TripPropType).isRequired,
   filterOptions: PropTypes.shape({
     searchText: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-  }),
-  currentTrip: TripType,
+  }).isRequired,
+  currentTrip: TripPropType.isRequired,
   isDetailPanelActive: PropTypes.bool.isRequired,
   isNewTrip: PropTypes.bool.isRequired,
 });

@@ -4,7 +4,7 @@ import './App.css';
 // =========================== Common Imports ================================
 
 // Store Object
-import { AppStoreType } from '../../common/store/store';
+import { AppStorePropType } from '../../common/store/store';
 
 // Auth
 import { setAppStorage } from '../../common/tokens/appStorage';
@@ -47,7 +47,7 @@ import TripFilters from '../trip-filters';
 
 class App extends React.Component {
   static propTypes = {
-    store: AppStoreType,
+    store: AppStorePropType.isRequired,
   };
   constructor(props) {
     super(props);

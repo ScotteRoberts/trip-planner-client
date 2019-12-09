@@ -1,4 +1,7 @@
 /* Add in color variables here for app-level usage */
-
 :root {
+  --panel-color: #add8e6;
+  --header-color: #08426a;
+  --success-color: lightgreen;
+  --error-color: #ffcccc;
 }

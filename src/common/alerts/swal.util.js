@@ -3,6 +3,7 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
+// Wrapper around the original Swal library to add support for React components.
 const MySwal = withReactContent(Swal);
 
 /**
@@ -63,6 +64,10 @@ export const handleReminderModal = async trip => {
   }
 };
 
+/**
+ * Displays a success message in the top right corner of the screen.
+ * @param {String} action Displayed action
+ */
 export const confirmSuccessfulAction = action =>
   MySwal.fire({
     position: 'top-end',

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './TripTable.css';
 import TripTableDatum from './TripTableDatum';
 
-import { TripType } from '../../common/trip/Trip.model';
+import { TripPropType } from '../../common/trip/Trip.model';
 
 const listingHeaders = [
   'Title',
@@ -43,7 +43,7 @@ const TripTable = props => (
 );
 
 TripTable.propTypes = {
-  tripList: PropTypes.arrayOf(TripType).isRequired,
+  tripList: PropTypes.arrayOf(TripPropType).isRequired,
   onTripSelect: PropTypes.func.isRequired,
 };
 
