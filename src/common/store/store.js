@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Trip, TripPropType, VacationState } from '../trip/Trip.model';
+import { Trip, TripPropType } from '../trip/Trip.model';
 
 /**
  * App Storage Object - Used as default storage if no local storage was detected
@@ -9,7 +9,7 @@ export const AppStore = {
   tripList: [],
   filterOptions: {
     searchText: '',
-    category: VacationState.none,
+    category: '',
   },
   // You can only edit fields through your current trip object
   currentTrip: new Trip(),
