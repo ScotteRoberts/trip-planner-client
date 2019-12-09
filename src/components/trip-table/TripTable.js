@@ -8,6 +8,7 @@ import { TripType } from '../../common/trip/Trip.model';
 const listingHeaders = [
   'Title',
   'Destination',
+  'Description',
   'Duration',
   'Category',
   'Reminder Set',

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './App.css';
 
 // =========================== Common Imports ================================
@@ -38,9 +37,8 @@ import {
 
 // =========================== Component Imports ================================
 
-import FilterPanel from '../filter-panel';
+import PanelLayout from '../panel-layout';
 import TripTable from '../trip-table';
-import DetailPanel from '../detail-panel';
 import TripForm from '../trip-form';
 import TodoList from '../todo-list';
 import TripFilters from '../trip-filters';
@@ -66,6 +64,9 @@ class App extends React.Component {
 
   // ===================== TIME KEEPING ===========================
 
+  /** Uses a timout function to set a pop-up reminder for the future
+   * @param {Trip} trip Trip object
+   */
   setReminder = trip => {
     const timeFromNow = timeToExec(trip);
     if (timeFromNow > 0)
@@ -73,19 +74,22 @@ class App extends React.Component {
         .then(() => handleReminderModal(trip))
         .then(result => {
           if (result.openDetails) {
+            // View Trip details now
             return this.setState({
               currentTrip: result.trip,
               isDetailPanelActive: true,
             });
           } else {
+            // Snoozing
             return this.setState(
               prevState => {
                 const newTripList = [...prevState.tripList];
                 const updatedList = updateTripList(newTripList, result.trip);
                 return { tripList: updatedList };
               },
-              // TODO: recursively call the wait method
+
               () => {
+                // Recursively call the wait method when snoozing
                 this.setReminder(result.trip);
               }
             );
@@ -96,7 +100,7 @@ class App extends React.Component {
 
   // ===================== GENERAL ================================
 
-  // FIXME: Bring out the reducer pattern for this state!!
+  // TODO: Bring out the `reducer` pattern for this state management in the future.
 
   setTripList = newTripList => {
     this.setState({ tripList: newTripList });
@@ -284,13 +288,13 @@ class App extends React.Component {
     } = this.state;
     return (
       <main id="app">
-        <FilterPanel>
+        <PanelLayout isActive>
           <TripFilters
             filterOptions={filterOptions}
             setFilterOptions={this.setFilterOptions}
             onAddNewTrip={this.handleAddNewTrip}
           />
-        </FilterPanel>
+        </PanelLayout>
 
         <TripTable
           tripList={filterTrips(tripList, filterOptions)}
@@ -299,7 +303,7 @@ class App extends React.Component {
           onAddNewTrip={this.handleAddNewTrip}
         />
 
-        <DetailPanel isActive={isDetailPanelActive}>
+        <PanelLayout isActive={isDetailPanelActive}>
           <TripForm
             currentTrip={currentTrip}
             isNewTrip={isNewTrip}
@@ -318,11 +322,10 @@ class App extends React.Component {
               todos={currentTrip.todos}
               onAddTodo={this.handleAddTodo}
               onEditTodo={this.handleEditTodo}
-              onChecked={this.handleCheckedTodo}
               onDelete={this.handleDeleteTodo}
             />
           </TripForm>
-        </DetailPanel>
+        </PanelLayout>
       </main>
     );
   }

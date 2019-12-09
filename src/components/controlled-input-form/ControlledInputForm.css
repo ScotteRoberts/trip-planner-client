@@ -35,6 +35,7 @@
   transition: all 250ms;
 }
 
-.controlled-input-form button:hover {
+.controlled-input-form button:hover,
+.controlled-input-form button:focus {
   background-color: orange;
 }

@@ -4,19 +4,39 @@ import './CategoryDropdown.css';
 
 // HACK: Clean this up to be reusable later
 export default class CategoryDropdown extends Component {
+  static propTypes = {
+    name: PropTypes.string,
+    form: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    name: '',
+    form: '',
+  };
+
+  constructor(props) {
+    super(props);
+  }
+
   handleChange = event => {
+    console.log(event);
     this.props.onChange(event.target.value);
   };
 
   render() {
+    console.log(this.props);
     return (
       <select
         name={this.props.name}
         form={this.props.form}
         onChange={this.handleChange}
-        value={this.props.category}
+        defaultValue={this.props.value}
+        value={this.props.value}
         className="category-dropdown"
       >
+        <option value="">- Select a Category -</option>
         <option value="None">None</option>
         <option value="Business Trip">Business Trip</option>
         <option value="Vacation">Vacation</option>

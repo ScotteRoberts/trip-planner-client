@@ -25,39 +25,47 @@ const Todo = props => {
 
   return (
     <div className="todo">
-      <input
-        type="checkbox"
-        name={todo.id}
-        id={todo.id}
-        checked={todo.isCompleted}
-        onChange={handleChecked}
-      />
-      {isEdited ? (
-        <input type="text" value={todo.description} onChange={handleEdit} />
-      ) : (
-        <span>{todo.description}</span>
-      )}
+      <div>
+        <input
+          type="checkbox"
+          name={todo.id}
+          id={todo.id}
+          checked={todo.isCompleted}
+          onChange={handleChecked}
+        />
+        {isEdited ? (
+          <input
+            type="text"
+            value={todo.description}
+            onChange={handleEdit}
+            className="todo__input-description"
+          />
+        ) : (
+          <span className="todo__description">{todo.description}</span>
+        )}
+      </div>
 
-      {isEdited ? (
-        <button type="button" onClick={() => setIsEdited(false)}>
-          Save
-        </button>
-      ) : (
-        <button type="button" onClick={() => setIsEdited(true)}>
-          Edit
-        </button>
-      )}
+      <div>
+        {isEdited ? (
+          <button type="button" onClick={() => setIsEdited(false)}>
+            Save
+          </button>
+        ) : (
+          <button type="button" onClick={() => setIsEdited(true)}>
+            Edit
+          </button>
+        )}
 
-      <button type="button" onClick={handleDelete}>
-        Delete
-      </button>
+        <button type="button" onClick={handleDelete}>
+          Delete
+        </button>
+      </div>
     </div>
   );
 };
 
 Todo.propTypes = {
   todo: TodoType.isRequired,
-  onChecked: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };

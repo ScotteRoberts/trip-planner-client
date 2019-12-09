@@ -1,0 +1,9 @@
+.panel-layout {
+  display: none;
+  background-color: #add8e6;
+}
+
+.panel-layout--active {
+  display: block;
+  background-color: #add8e6;
+}

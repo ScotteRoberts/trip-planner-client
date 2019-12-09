@@ -43,7 +43,7 @@ export default class ControlledInputForm extends React.Component {
             name="inputValue"
             id="inputValue"
             placeholder={this.props.placeholder}
-            value={this.state.searchText}
+            value={this.state.inputValue}
             onChange={this.handleChange}
           />
         </label>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import './TripForm.css';
 
 import DateTimePicker from 'react-datetime-picker';
-import DatePicker from 'react-date-picker';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import CategoryDropdown from '../category-dropdown';
 
@@ -128,31 +127,23 @@ class TripForm extends Component {
 
         {/* ====================================================== */}
 
-        <div>
-          <div>
-            Start Date:
-            <DatePicker
-              name="start-date"
-              required
-              onChange={date => this.props.onNamedChange('startDate', date)}
-              value={new Date(startDate)}
-            />
-          </div>
-
-          <div>
-            End Date:
-            <DatePicker
-              name="end-date"
-              required
-              onChange={date => this.props.onNamedChange('endDate', date)}
-              value={new Date(endDate)}
-            />
-          </div>
+        <div className="trip-form-daterange-picker-container">
+          Select Vacation Days:
+          <DateRangePicker
+            required
+            value={[new Date(startDate), new Date(endDate)]}
+            onChange={dateRange => {
+              this.props.onNamedChange('startDate', dateRange[0]);
+              this.props.onNamedChange('endDate', dateRange[1]);
+            }}
+            clearIcon={null}
+            className="trip-form-daterange-picker"
+          />
         </div>
 
         <div>
           <h3>Set Reminder:</h3>
-          <div>
+          <div className="trip-form-datetime-picker-container">
             <input
               type="checkbox"
               name="reminder"
@@ -161,8 +152,10 @@ class TripForm extends Component {
               onChange={this.props.onReminderSet}
             />
             <DateTimePicker
-              onChange={date => this.props.onReminderChange('dateTime', date)}
               value={new Date(reminder.dateTime)}
+              onChange={date => this.props.onReminderChange('dateTime', date)}
+              clearIcon={null}
+              className="trip-form-datetime-picker"
             />
           </div>
         </div>

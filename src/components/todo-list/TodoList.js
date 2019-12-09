@@ -66,7 +66,6 @@ class TodoList extends React.Component {
             <Todo
               key={index}
               todo={todo}
-              onChecked={this.props.onChecked}
               onEdit={this.props.onEditTodo}
               onDelete={this.props.onDelete}
             />
@@ -80,7 +79,6 @@ class TodoList extends React.Component {
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(TodoType).isRequired,
   onAddTodo: PropTypes.func.isRequired,
-  onChecked: PropTypes.func.isRequired,
   onEditTodo: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   maxHeight: PropTypes.string,

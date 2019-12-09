@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TripType } from '../../common/trip/Trip.model';
 import './TripTableDatum.css';
 
 import Emoji from '../emjoi/Emoji';
@@ -8,31 +9,45 @@ import {
   incompleteTodos,
   parseTimeToDays,
 } from '../../common/todo/Todo.util';
-import { DateStringType } from '../../common/trip/Trip.model';
 
 const TripTableDatum = props => {
+  const handleRowSelect = event => {
+    if (
+      event.type === 'click' ||
+      (event.type === 'keydown' && event.key === 'Enter')
+    )
+      props.onTripSelect(props.trip);
+  };
   const {
     title,
     destination,
+    description,
     tripDuration,
     category,
     reminder,
     todos,
     planningState,
   } = props.trip;
+
   return (
-    <tr>
-      <td>
-        <button onClick={() => props.onTripSelect(props.trip)}>{title}</button>
-      </td>
+    <tr
+      tabIndex="0"
+      role="button"
+      aria-pressed="false"
+      aria-label={`Trip Record for ${title}`}
+      onClick={handleRowSelect}
+      onKeyDown={handleRowSelect}
+    >
+      <td>{title}</td>
       <td>{destination}</td>
+      <td>{description}</td>
       <td>{`${parseTimeToDays(tripDuration)} Days`}</td>
       <td>{category}</td>
       <td>
         {reminder.isSet ? (
-          <Emoji label="checkmark">✅</Emoji>
+          <Emoji label="checkmark" icon="✅" />
         ) : (
-          <Emoji label="not here">⛔️</Emoji>
+          <Emoji label="not here" icon="⛔️" />
         )}
       </td>
       <td>{incompleteTodos(todos)}</td>
@@ -43,16 +58,7 @@ const TripTableDatum = props => {
 };
 
 TripTableDatum.propTypes = {
-  trip: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    destination: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    reminder: PropTypes.shape({
-      isSet: PropTypes.bool.isRequired,
-      dateTime: DateStringType.isRequired,
-    }).isRequired,
-  }).isRequired,
+  trip: TripType,
   onTripSelect: PropTypes.func.isRequired,
 };
 

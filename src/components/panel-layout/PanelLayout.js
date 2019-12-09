@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './DetailPanel.css';
+import './PanelLayout.css';
 
-const DetailPanel = props => (
-  <aside className={`detail-panel${props.isActive ? ' active' : ''}`}>
+const PanelLayout = props => (
+  <aside className={`panel-layout${props.isActive ? '--active' : ''}`}>
     {props.children}
   </aside>
 );
 
-DetailPanel.propTypes = {
+PanelLayout.propTypes = {
   isActive: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -16,4 +16,4 @@ DetailPanel.propTypes = {
   ]).isRequired,
 };
 
-export default DetailPanel;
+export default PanelLayout;

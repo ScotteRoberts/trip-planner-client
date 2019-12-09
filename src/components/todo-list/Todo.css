@@ -1,5 +1,11 @@
 .todo {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0.5em 0;
+}
+
+.todo__description,
+.todo__input-description {
+  padding: 0 0.4em;
 }

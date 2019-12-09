@@ -1,8 +1,0 @@
-.detail-panel {
-  display: none;
-  background-color: grey;
-}
-
-.detail-panel.active {
-  display: block;
-}

@@ -12,7 +12,7 @@ export const PlanningStates = {
 };
 
 export const VacationState = {
-  none: 'None',
+  none: '',
   business: 'Business',
   vacation: 'Vacation',
 };
