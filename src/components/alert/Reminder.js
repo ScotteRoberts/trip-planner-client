@@ -1,6 +1,5 @@
 import React from 'react';
 import MySwal from '../../config/sweet-alert/Swal';
-import { parseTimeToDays } from '../../common/todo/Todo.util';
 
 import { TripPropType } from '../../common/trip/Trip.model';
 
@@ -64,7 +63,7 @@ export const handleReminderModal = async trip => {
 };
 
 /**
- * Shows import trip details
+ * Shows important trip details
  * @param {Trip} trip
  */
 const TripDetails = ({ trip }) => (

@@ -5,6 +5,7 @@ import './TripForm.css';
 import DateTimePicker from 'react-datetime-picker';
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import CategoryDropdown from '../category-dropdown';
+import TripFormTextInput from './TripFormTextInput';
 
 import { TripPropType } from '../../common/trip/Trip.model';
 
@@ -56,18 +57,27 @@ class TripForm extends Component {
   };
 
   handleSaveTrip = event => {
+    event.preventDefault();
     this.resetValidation();
     this.props.onSaveTrip();
   };
 
   handleCancelTrip = event => {
+    event.preventDefault();
     this.resetValidation();
     this.props.onCancelTrip();
   };
 
   handleDeleteTrip = event => {
+    event.preventDefault();
     this.resetValidation();
     this.props.onDeleteTrip();
+  };
+
+  handleBlur = field => evt => {
+    this.setState(prevState => ({
+      touched: { ...prevState.touched, [field]: true },
+    }));
   };
 
   validate = currentTrip => {
@@ -89,18 +99,6 @@ class TripForm extends Component {
         !reminder.isSet || reminderDateValidation(startDate, reminder.dateTime),
     };
   };
-
-  handleBlur = field => evt => {
-    this.setState(prevState => ({
-      touched: { ...prevState.touched, [field]: true },
-    }));
-  };
-
-  canBeSubmitted() {
-    const validations = this.validate(this.props.currentTrip);
-    const isValid = Object.keys(validations).every(field => validations[field]);
-    return isValid;
-  }
 
   render() {
     const {
@@ -124,51 +122,39 @@ class TripForm extends Component {
       return hasError && shouldShow;
     };
 
+    const textInputs = [
+      {
+        id: 'title',
+        value: title,
+        placeholder: 'Title',
+      },
+      {
+        id: 'destination',
+        value: destination,
+        placeholder: 'Destination',
+      },
+      {
+        id: 'description',
+        value: description,
+        placeholder: 'Description',
+      },
+    ];
+
     return (
       <form onSubmit={this.handleSaveTrip} className="trip-form">
         <h2>Plan A New Trip</h2>
         <div className="trip-form-fields">
-          <label className="input-container" htmlFor="title">
-            Title:
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={title}
-              placeholder="title"
-              onChange={this.props.onInputChange}
-              onBlur={this.handleBlur('title')}
-              className={shouldMarkError('title') ? '--error' : ''}
+          {textInputs.map(textInput => (
+            <TripFormTextInput
+              key={textInput.id}
+              id={textInput.id}
+              value={textInput.value}
+              placeholder={textInput.placeholder}
+              onInputChange={this.props.onInputChange}
+              onBlur={this.handleBlur}
+              className={shouldMarkError(textInput.id) ? '--error' : ''}
             />
-          </label>
-
-          <label className="input-container" htmlFor="destination">
-            Destination:
-            <input
-              type="text"
-              name="destination"
-              id="destination"
-              placeholder="destination"
-              value={destination}
-              onChange={this.props.onInputChange}
-              onBlur={this.handleBlur('destination')}
-              className={shouldMarkError('destination') ? '--error' : ''}
-            />
-          </label>
-
-          <label className="input-container" htmlFor="description">
-            Description:
-            <input
-              type="text"
-              name="description"
-              id="description"
-              placeholder="description"
-              value={description}
-              onChange={this.props.onInputChange}
-              onBlur={this.handleBlur('description')}
-              className={shouldMarkError('description') ? '--error' : ''}
-            />
-          </label>
+          ))}
 
           <div className="input-container">
             Category:
@@ -186,7 +172,7 @@ class TripForm extends Component {
 
         {/* ====================================================== */}
 
-        <div className="trip-form-daterange-picker-container">
+        <div>
           Select Vacation Days:
           <DateRangePicker
             required
@@ -202,6 +188,8 @@ class TripForm extends Component {
             }`}
           />
         </div>
+
+        {/* ====================================================== */}
 
         <div>
           <h3>Set Reminder:</h3>

@@ -1,4 +1,9 @@
 .trip-filters {
   display: grid;
   padding: 1rem;
+  text-align: center;
+}
+
+.trip-filters__button {
+  font-size: 0.75em;
 }

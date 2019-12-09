@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { TripPropType } from '../../common/trip/Trip.model';
 import './TripTableDatum.css';
 
-import Emoji from '../emjoi/Emoji';
+import Emoji from '../emoji/Emoji';
 import {
   completedTodos,
   incompleteTodos,

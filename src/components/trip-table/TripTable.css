@@ -1,6 +1,6 @@
 .trip-table {
-  border-collapse: collapse;
   display: table-header-group;
+  border-collapse: collapse;
   table-layout: fixed;
 }
 
@@ -24,8 +24,3 @@
   background-color: #08426a;
   color: white;
 }
-
-/* tr {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-} */

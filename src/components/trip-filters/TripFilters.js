@@ -34,7 +34,9 @@ const TripFilters = props => {
         value={props.filterOptions.category}
       />
       <h2>Actions</h2>
-      <button onClick={props.onAddNewTrip}>Add a trip</button>
+      <button className="trip-filters__button" onClick={props.onAddNewTrip}>
+        Add a trip
+      </button>
     </div>
   );
 };

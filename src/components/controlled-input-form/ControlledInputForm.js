@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './ControlledInputForm.css';
 
-export default class ControlledInputForm extends React.Component {
+class ControlledInputForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -70,3 +70,5 @@ ControlledInputForm.defaultProps = {
   icon: '✏️',
   'aria-label': '',
 };
+
+export default ControlledInputForm;

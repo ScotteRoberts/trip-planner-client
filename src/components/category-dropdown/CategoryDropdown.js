@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './CategoryDropdown.css';
 
-// HACK: Clean this up to be reusable later
-export default class CategoryDropdown extends Component {
+class CategoryDropdown extends Component {
   static propTypes = {
     name: PropTypes.string,
     form: PropTypes.string,
@@ -39,3 +38,5 @@ export default class CategoryDropdown extends Component {
     );
   }
 }
+
+export default CategoryDropdown;

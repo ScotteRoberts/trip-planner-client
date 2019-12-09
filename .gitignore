@@ -24,3 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode
+
+# TODO: Reveal this later if you are able to
+src/assets/doc/

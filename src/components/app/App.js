@@ -21,7 +21,6 @@ import {
   updateTripList,
   calcPlanningState,
   calcTripDuration,
-  tripsWithReminders,
   timeToExec,
   wait,
 } from '../../common/trip/Trip.util';
@@ -53,19 +52,20 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    tripsWithReminders(this.state.tripList).forEach(trip => {
+    this.state.tripList.forEach(trip => {
       this.setReminder(trip);
     });
   }
 
   // ===================== TIME KEEPING ===========================
 
-  /** Uses a timout function to set a pop-up reminder for the future
+  /**
+   * Uses a timeout function to set a pop-up reminder for the future
    * @param {Trip} trip Trip object
    */
   setReminder = trip => {
     const timeFromNow = timeToExec(trip);
-    if (timeFromNow > 0)
+    if (trip.reminder.isSet && timeFromNow > 0) {
       wait(timeFromNow)
         .then(() => handleReminderModal(trip))
         .then(result => {
@@ -92,15 +92,12 @@ class App extends React.Component {
           }
         })
         .catch(err => console.error(err));
+    }
   };
 
   // ===================== GENERAL ================================
 
   // TODO: Bring out the `reducer` pattern for this state management in the future.
-
-  setTripList = newTripList => {
-    this.setState({ tripList: newTripList });
-  };
 
   setFilterOptions = updatedFilterOptions => {
     this.setState({ filterOptions: updatedFilterOptions });
@@ -114,15 +111,7 @@ class App extends React.Component {
     });
   };
 
-  toggleTripForm = event => {
-    if (event) event.preventDefault();
-    this.setState(prevState => ({
-      isDetailPanelActive: !prevState.isDetailPanelActive,
-    }));
-  };
-
-  handleAddNewTrip = event => {
-    if (event) event.preventDefault();
+  handleAddNewTrip = () => {
     this.setState({
       currentTrip: new Trip(),
       isDetailPanelActive: true,
@@ -132,24 +121,18 @@ class App extends React.Component {
 
   // ===================== TRIP FORM HANDLERS ================================
 
-  handleSaveTrip = event => {
-    if (event) event.preventDefault();
-    // Update the trips list
-
+  handleSaveTrip = () => {
     const tempCurrentTrip = { ...this.state.currentTrip };
+    const { todos, startDate, endDate } = tempCurrentTrip;
+
+    // Calculate new trip progress
+    tempCurrentTrip.planningState = calcPlanningState(todos);
+
+    // Calculate trip duration
+    tempCurrentTrip.tripDuration = calcTripDuration(startDate, endDate);
 
     this.setState(
       prevState => {
-        const { todos, startDate, endDate } = tempCurrentTrip;
-
-        // Calculate new trip progress
-        tempCurrentTrip.planningState = calcPlanningState(todos);
-
-        // Calculate trip duration
-        tempCurrentTrip.tripDuration = calcTripDuration(startDate, endDate);
-
-        this.setReminder(tempCurrentTrip);
-
         // Update the list of trips
         const updatedTripList = updateTripList(
           prevState.tripList,
@@ -163,6 +146,8 @@ class App extends React.Component {
         };
       },
       () => {
+        // Remind me later to look at my todos.
+        this.setReminder(tempCurrentTrip);
         // Persist to Local Storage
         setAppStorage({ ...this.state });
         // Send Feedback to the user
@@ -171,24 +156,19 @@ class App extends React.Component {
     );
   };
 
-  handleResetTrip = event => {
-    if (event) event.preventDefault();
+  handleResetTrip = () => {
     this.setState(prevState => ({
       currentTrip: new Trip(),
       isDetailPanelActive: !prevState.isDetailPanelActive,
     }));
   };
 
-  handleDeleteTrip = event => {
-    if (event) event.preventDefault();
-
-    const tempCurrentTrip = { ...this.state.currentTrip };
-
+  handleDeleteTrip = () => {
     this.setState(
       prevState => {
         const updatedTripList = deleteTripById(
           prevState.tripList,
-          tempCurrentTrip.id
+          prevState.currentTrip.id
         );
         return {
           tripList: updatedTripList,
@@ -210,6 +190,9 @@ class App extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
+    console.log(value);
+    console.log(name);
+
     this.setState(prevState => ({
       currentTrip: { ...prevState.currentTrip, [name]: value },
     }));
@@ -217,7 +200,10 @@ class App extends React.Component {
 
   handleNamedChange = (name, value) => {
     this.setState(prevState => ({
-      currentTrip: { ...prevState.currentTrip, [name]: value },
+      currentTrip: {
+        ...prevState.currentTrip,
+        [name]: value,
+      },
     }));
   };
 
@@ -283,7 +269,6 @@ class App extends React.Component {
       isNewTrip,
     } = this.state;
 
-    console.log(filterOptions);
     return (
       <main id="app">
         <PanelLayout isActive>
@@ -296,7 +281,6 @@ class App extends React.Component {
 
         <TripTable
           tripList={filterTrips(tripList, filterOptions)}
-          setTripList={this.setTripList}
           onTripSelect={this.handleSelectingTrip}
           onAddNewTrip={this.handleAddNewTrip}
         />
@@ -305,7 +289,6 @@ class App extends React.Component {
           <TripForm
             currentTrip={currentTrip}
             isNewTrip={isNewTrip}
-            setTripList={this.setTripList}
             onSaveTrip={this.handleSaveTrip}
             onCancelTrip={this.handleResetTrip}
             onDeleteTrip={this.handleDeleteTrip}
