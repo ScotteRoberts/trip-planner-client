@@ -190,9 +190,6 @@ class App extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    console.log(value);
-    console.log(name);
-
     this.setState(prevState => ({
       currentTrip: { ...prevState.currentTrip, [name]: value },
     }));
