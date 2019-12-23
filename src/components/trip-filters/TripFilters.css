@@ -1,6 +1,9 @@
 .trip-filters {
   display: grid;
   padding: 0 1rem;
+}
+
+.trip-filters__heading {
   text-align: center;
 }
 

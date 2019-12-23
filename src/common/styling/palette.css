@@ -12,7 +12,8 @@
   --pink: #ef2861;
   --pink-light: #ff467f;
 
-  --white: rgb(255, 255, 255);
+  --grey-scale-0: rgb(255, 255, 255);
+  --grey-scale-1: rgba(221, 220, 220, 0.801);
   --black: rgb(27, 27, 27);
 
   --success-color: lightgreen;

@@ -1,4 +1,22 @@
 .category-dropdown {
+  /* position: relative; */
+  appearance: none;
+  border: none;
+
   margin: 0.4em 0;
+  padding: 0.8rem;
+
+  color: var(--grey-scale-0);
+  background: var(--purple-light);
   border-radius: 0;
 }
+
+/* TODO: Deal with the arrow later... */
+/* .category-dropdown::after {
+  position: absolute;
+  color: white;
+  content: '⬇︎';
+  top: 0;
+  left: 0;
+  z-index: 5;
+} */

@@ -22,7 +22,7 @@ code {
 input[type='text'] {
   border: none;
   background-color: var(--purple-light);
-  color: var(--white);
+  color: var(--grey-scale-0);
   margin: 0.4em 0;
   padding: 0.8em;
 }
@@ -42,23 +42,27 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--white);
+  color: var(--grey-scale-0);
+}
+
+h3 {
+  margin-bottom: 0;
 }
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: var(--white);
+  color: var(--grey-scale-1);
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: var(--white);
+  color: var(--grey-scale-1);
 }
 
 ::-ms-input-placeholder {
   /* Microsoft Edge */
-  color: var(--white);
+  color: var(--grey-scale-1);
 }
 
 button {
@@ -68,5 +72,5 @@ button {
 }
 
 button:disabled {
-  background-color: white;
+  background-color: var(--grey-scale-0);
 }

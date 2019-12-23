@@ -21,11 +21,11 @@ const TripFilters = props => {
 
   return (
     <div className="trip-filters">
-      <h2>Actions</h2>
+      <h2 className="trip-filters__heading">Actions</h2>
       <Button className="trip-filters__button" onClick={props.onAddNewTrip}>
         Create a New Trip
       </Button>
-      <h2>Filters</h2>
+      <h3>Filters</h3>
       <SearchBar
         icon="🔎"
         placeholder="Search"

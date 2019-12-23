@@ -1,5 +1,4 @@
 .trip-form {
-  display: grid;
   padding: 0 1rem;
 }
 
@@ -16,6 +15,14 @@
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+
+  color: var(--grey-scale-0);
+}
+
+/* ================ Daterange ===================== */
+
+.trip-form__reminder-container {
+  color: var(--grey-scale-0);
 }
 
 .trip-form-daterange-picker-container {
@@ -29,14 +36,28 @@
 }
 
 .trip-form-daterange-picker .react-daterange-picker__wrapper {
+  margin: 0.4em 0;
+  /* padding: 0.5rem; */
+
   width: 100%;
   border: none;
-  background-color: white;
+  background-color: var(--purple-light);
+  flex-flow: wrap;
 }
 
 .trip-form-daterange-picker.--error .react-daterange-picker__wrapper {
   background: var(--error-color);
 }
+
+.trip-form-daterange-picker .react-daterange-picker__inputGroup > * {
+  color: white;
+}
+
+.trip-form-daterange-picker .react-daterange-picker__button__icon {
+  stroke: white;
+}
+
+/* ================ Datetime ===================== */
 
 .trip-form-datetime-picker-container {
   display: flex;
@@ -51,12 +72,27 @@
 .trip-form-datetime-picker .react-datetime-picker__wrapper {
   width: 100%;
   border: none;
-  background-color: white;
+  display: block;
+  background-color: var(--purple-light);
 }
 
 .trip-form-datetime-picker.--error .react-datetime-picker__wrapper {
   background-color: var(--error-color);
 }
+
+.trip-form-datetime-picker .react-datetime-picker__inputGroup {
+  display: block;
+}
+
+.trip-form-datetime-picker .react-datetime-picker__inputGroup > * {
+  color: white;
+}
+
+.trip-form-datetime-picker .react-datetime-picker__button__icon {
+  stroke: white;
+}
+
+/* ================ Toolbar ===================== */
 
 .trip-form--toolbar {
   margin: 1em;

@@ -29,5 +29,5 @@
 .trip-table th {
   text-align: left;
   background-color: #08426a;
-  color: white;
+  color: var(--grey-scale-0);
 }

@@ -166,7 +166,7 @@ class TripForm extends Component {
 
         {/* ====================================================== */}
 
-        <div>
+        <div className="trip-form__reminder-container">
           Select Trip Days:
           <DateRangePicker
             required
