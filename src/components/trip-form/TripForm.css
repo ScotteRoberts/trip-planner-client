@@ -64,16 +64,19 @@
   align-items: center;
 }
 
+.trip-form-datetime-picker-container {
+  background-color: var(--purple-light);
+  margin: 0.4em 0;
+}
+
 .trip-form-datetime-picker {
   width: 100%;
-  margin: 0.4em 0;
 }
 
 .trip-form-datetime-picker .react-datetime-picker__wrapper {
   width: 100%;
   border: none;
   display: block;
-  background-color: var(--purple-light);
 }
 
 .trip-form-datetime-picker.--error .react-datetime-picker__wrapper {
