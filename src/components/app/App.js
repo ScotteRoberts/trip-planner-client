@@ -267,7 +267,14 @@ class App extends React.Component {
     } = this.state;
 
     return (
-      <main id="app">
+      <main
+        id="app"
+        style={{
+          gridTemplateColumns: isDetailPanelActive
+            ? '15% auto 20%'
+            : '15% auto',
+        }}
+      >
         <PanelLayout isActive>
           <TripFilters
             filterOptions={filterOptions}

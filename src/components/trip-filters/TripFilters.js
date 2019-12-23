@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './TripFilters.css';
 import SearchBar from '../controlled-input-form';
 import CategoryDropdown from '../category-dropdown';
+import Button from '../button';
 
 const TripFilters = props => {
   const handleFilterChange = (property, value) => {
@@ -20,6 +21,10 @@ const TripFilters = props => {
 
   return (
     <div className="trip-filters">
+      <h2>Actions</h2>
+      <Button className="trip-filters__button" onClick={props.onAddNewTrip}>
+        Create a New Trip
+      </Button>
       <h2>Filters</h2>
       <SearchBar
         icon="🔎"
@@ -33,10 +38,6 @@ const TripFilters = props => {
         onChange={handleCategoryChange}
         value={props.filterOptions.category}
       />
-      <h2>Actions</h2>
-      <button className="trip-filters__button" onClick={props.onAddNewTrip}>
-        Add a trip
-      </button>
     </div>
   );
 };

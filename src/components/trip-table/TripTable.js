@@ -19,7 +19,7 @@ const listingHeaders = [
 
 const TripTable = props => (
   // FIXME: The overflow should be done in a container component?
-  <div style={{ overflowX: 'auto' }}>
+  <div className="trip-table-container">
     <table className="trip-table">
       <thead>
         <tr>

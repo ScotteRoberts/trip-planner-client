@@ -1,3 +1,10 @@
+.trip-table-container {
+  overflow-x: auto;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 .trip-table {
   display: table-header-group;
   border-collapse: collapse;

@@ -12,7 +12,6 @@ import { TripPropType } from '../../common/trip/Trip.model';
 import {
   titleValidation,
   destinationValidation,
-  descriptionValidation,
   startDateValidation,
   reminderDateValidation,
   categoryValidation,
@@ -44,7 +43,6 @@ class TripForm extends Component {
       validFields: {
         title: false,
         destination: false,
-        description: false,
         dateRange: false,
         reminder: false,
       },
@@ -81,18 +79,10 @@ class TripForm extends Component {
   };
 
   validate = currentTrip => {
-    const {
-      title,
-      destination,
-      description,
-      category,
-      startDate,
-      reminder,
-    } = currentTrip;
+    const { title, destination, category, startDate, reminder } = currentTrip;
     return {
       title: titleValidation(title),
       destination: destinationValidation(destination),
-      description: descriptionValidation(description),
       category: categoryValidation(category),
       dateRange: startDateValidation(startDate), // TODO: Add end date validations
       reminder:
@@ -126,28 +116,32 @@ class TripForm extends Component {
       {
         id: 'title',
         value: title,
-        placeholder: 'Title',
+        label: 'Title',
+        placeholder: 'How do you want to label your trip?',
       },
       {
         id: 'destination',
         value: destination,
-        placeholder: 'Destination',
+        label: 'Destination',
+        placeholder: 'Where are you going?',
       },
       {
         id: 'description',
         value: description,
-        placeholder: 'Description',
+        label: 'Description',
+        placeholder: 'Extra details?',
       },
     ];
 
     return (
       <form onSubmit={this.handleSaveTrip} className="trip-form">
-        <h2>Plan A New Trip</h2>
+        <h2 className="trip-form-title">Plan A New Trip</h2>
         <div className="trip-form-fields">
           {textInputs.map(textInput => (
             <TripFormTextInput
               key={textInput.id}
               id={textInput.id}
+              label={textInput.label}
               value={textInput.value}
               placeholder={textInput.placeholder}
               onInputChange={this.props.onInputChange}
@@ -173,7 +167,7 @@ class TripForm extends Component {
         {/* ====================================================== */}
 
         <div>
-          Select Vacation Days:
+          Select Trip Days:
           <DateRangePicker
             required
             value={[new Date(startDate), new Date(endDate)]}

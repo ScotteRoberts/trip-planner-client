@@ -1,7 +1,20 @@
 /* Add in color variables here for app-level usage */
 :root {
-  --panel-color: #add8e6;
-  --header-color: #08426a;
+  --purple-dark: #581845;
+  --purple: #763663;
+  --purple-light: #945481;
+
+  --hibiscus-dark: #900c3f;
+  --hibiscus: #b83467;
+  --hibiscus-light: #d65285;
+
+  --pink-dark: #c70039;
+  --pink: #ef2861;
+  --pink-light: #ff467f;
+
+  --white: rgb(255, 255, 255);
+  --black: rgb(27, 27, 27);
+
   --success-color: lightgreen;
   --error-color: #ffcccc;
 }

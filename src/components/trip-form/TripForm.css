@@ -1,6 +1,10 @@
 .trip-form {
-  padding: 1rem;
   display: grid;
+  padding: 0 1rem;
+}
+
+.trip-form-title {
+  text-align: center;
 }
 
 .trip-form-fields {
@@ -27,7 +31,6 @@
 .trip-form-daterange-picker .react-daterange-picker__wrapper {
   width: 100%;
   border: none;
-  border-radius: var(--border-radius);
   background-color: white;
 }
 
@@ -48,7 +51,6 @@
 .trip-form-datetime-picker .react-datetime-picker__wrapper {
   width: 100%;
   border: none;
-  border-radius: var(--border-radius);
   background-color: white;
 }
 
@@ -62,6 +64,6 @@
   justify-content: space-evenly;
 }
 
-.--error {
-  background: var(--error-color);
+.trip-form--toolbar button {
+  padding: 0.5rem 1rem;
 }

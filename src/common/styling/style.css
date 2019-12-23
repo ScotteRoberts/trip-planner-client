@@ -21,12 +21,52 @@ code {
 
 input[type='text'] {
   border: none;
+  background-color: var(--purple-light);
+  color: var(--white);
   margin: 0.4em 0;
-  border-radius: var(--border-radius);
   padding: 0.8em;
 }
 
 input [type='checkbox'] {
   width: 1rem;
   height: 1rem;
+}
+
+.--error {
+  color: var(--error-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--white);
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--white);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--white);
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--white);
+}
+
+button {
+  border: none;
+  border-radius: 0;
+  background-color: var(--pink);
+}
+
+button:disabled {
+  background-color: white;
 }

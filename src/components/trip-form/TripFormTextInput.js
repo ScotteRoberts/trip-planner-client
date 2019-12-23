@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const TripFormTextInput = props => (
   <label className="input-container" htmlFor={props.id}>
-    {`${props.placeholder}:`}
+    {`${props.label}:`}
     <input
       type="text"
       name={props.id}
@@ -21,6 +21,7 @@ TripFormTextInput.propTypes = {
   id: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
   onBlur: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   className: PropTypes.string,
